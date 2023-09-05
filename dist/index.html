@@ -3,11 +3,75 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- <link rel="stylesheet" href="./css/style.css" /> -->
+
+  <!-- Promeni kasnije -->
+  <script defer src="https://kit.fontawesome.com/51148f5aa4.js" crossorigin="anonymous"></script>
   <script defer src="main.js"></script>
   <title>To-Do list</title>
 </head>
 <body>
-  <h1>To Do</h1>
+  <header class="section-header">
+    <div class="task-icon"><i class="fa-solid fa-list-check fa-3x" style="color: var(--color-green);"></i></div>
+    <h1 class="heading-primary">
+      <i class="fa-solid fa-circle-check" style="color: var(--color-green);"></i>
+      What<span class="heading--primary--span">ToDo</span>
+    </h1>
+    <div class="toggle-viewport-color">
+      <i class="fa-solid fa-sun fa-3x" style="color: var(--color-yellow);"></i>
+      <div class="ball"></div>
+    </div>
+  </header>
+
+
+  <main class="grid grid--2-cols">
+    <aside class="section-aside">
+      <p class="heading-secondary section-aside--title">Home</p>
+      <div class="homes margin-bottom--sm flex flex--column gap--es">
+        <div class="home home--all-tasks flex gap--es">
+          <i class="fa-solid fa-clipboard fa-2x"></i>
+          <p class="subheading">All Tasks</p>
+        </div>
+        <div class="home home--today flex gap--es">
+          <i class="fa-solid fa-calendar-day fa-2x"></i>
+          <p class="subheading">Today</p>
+        </div>
+        <div class="home home--7-days flex gap--es">
+          <i class="fa-solid fa-calendar-week fa-2x"></i>
+          <p class="subheading">Next 7 Days</p>
+        </div>
+        <div class="home home--important flex gap--es">
+          <i class="fa-solid fa-star fa-2x"></i>
+          <p class="subheading">Important</p>
+        </div>
+      </div>
+      <p class="heading-secondary section-aside--title">Projects</p>
+      <div class="projects flex flex--column gap--md">
+       <div class="project flex flex--center-v">
+        <i class="fa-solid fa-bars fa-2x"></i>
+        <p class="project--name">Shopping</p>
+        <i class="fa-solid fa-ellipsis-vertical fa-2x"></i>
+       </div>
+       <button class="project-add flex flex--center-v ">
+        <i class="fa-regular fa-circle-xmark"></i>
+        <span class="project-add--name margin-left--md">Add Project</span>
+       </button>
+      </div>
+    </aside>
+
+    <section class="section-main">
+      <div class="main">
+        <h3 class="main-title heading-tertiary">Project</h3>
+        <div class="task">
+          <ul class="task--lists">
+            <!-- <li class="taks--list"></li> -->
+          </ul>
+          <button class="task-add flex flex--center">
+            <i class="fa-regular fa-circle-xmark"></i>
+            <span class="task-add--name margin-left--md">Add Task</span>
+           </button>
+        </div>
+      </div>
+    </section>
+  </main>
 </body>
 </html>
