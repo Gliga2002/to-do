@@ -9,7 +9,9 @@
 :root {
   --color--blackish:#374958;
   --color-green:#2abd67;
+  --color-green--darker:#07ac61;
   --color-yellow:#ecef1f;
+  --color-yellow--dark:#d3d60c;
   --color-cream--soft:#f2f3f5;
   --color-cream--dark:#ececec;
   --color-white:#ffffff;
@@ -103,15 +105,14 @@ body {
 }
 
 .heading-tertiary {
-  font-size: 2.5rem;
-  line-height: 1.2;
+  font-size: 2.3rem;
+  line-height: 1;
 }
 
+
 .subheading {
-  font-size: 1.9rem;
-  font-weight: 500;
+  font-size: 2rem;
   letter-spacing: 0.75px;
-  margin-top: 2px;
 }
 
 .center-text {
@@ -124,12 +125,20 @@ body {
   margin-right: 1.6rem !important;
 }
 
+.margin-left--sm {
+  margin-left: 1.5rem;
+}
+
 .margin-left--md {
   margin-left: 3rem;
 }
 
-.margin-bottom-md {
-  margin-bottom: 4.8rem !important;
+.margin-bottom--md {
+  margin-bottom: 3.2rem;
+}
+
+.margin-bottom--es {
+  margin-bottom: 1rem;
 }
 
 .margin-bottom--sm {
@@ -207,14 +216,15 @@ main {
   margin-bottom: 2.7rem;
 }
 
-.home:hover,
-.project-add:hover
+.home:hover
 {
  background-color:  var(--color-cream--soft);
 }
 
-.task-add:hover {
-  background-color: var(--color-white);
+.task-add:hover,
+.project-add:hover {
+  background-color: var(--color-green--darker);
+  color:var(--color-white);
 }
 
 .project
@@ -240,6 +250,7 @@ main {
   font-size: 2rem;
   font-weight: 500;
   border-radius: 5px;
+  transition:all 0.3s;
 }
 
 .project-add {
@@ -272,6 +283,53 @@ main {
   margin-bottom: 1rem;
   letter-spacing: 0.3px;
   font-weight: normal;
+  margin-bottom: 3rem;
+}
+
+.tasks--lists {
+  padding-left:2.5rem;
+}
+
+.tasks--item {
+  list-style: none;
+}
+
+.tasks--item:last-child {
+  margin-bottom: 0 !important;
+}
+
+.task {
+  border:1.5px solid var(--color--blackish);
+  border-radius:5px;
+  padding:5px;
+
+}
+
+.task-header {
+  align-items: center;
+  justify-content: space-between;
+}
+
+.task-header--left {
+
+}
+
+
+.task-header--right {
+
+}
+
+.task-date {
+  font-size: 1.3rem;
+  padding:4px 7px;
+  margin: 6px 5px;
+  border: 1.5px solid var(--color--blackish);
+  border-radius: 10px;
+}
+
+.task-body--text {
+  font-size:1.3rem;
+  line-height: 1.2;
 }
 
 

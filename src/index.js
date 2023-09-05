@@ -1,5 +1,5 @@
 import test from './applicationLogic.js'
-import './css/style.css'
+import './css/style.css';
 
 test();
 
