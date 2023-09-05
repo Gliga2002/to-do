@@ -46,15 +46,54 @@
       </div>
       <p class="heading-secondary section-aside--title">Projects</p>
       <div class="projects flex flex--column gap--md">
+
        <div class="project flex flex--center-v">
         <i class="fa-solid fa-bars fa-2x"></i>
         <p class="project--name">Shopping</p>
         <i class="fa-solid fa-ellipsis-vertical fa-2x"></i>
+
+         <!-- OVO ISTO IDE U JS -->
+        <div class="pop-up pop-up--rename flex flex--column">
+          <button>Rename</button>
+          <button>Delete</button>
+         </div>
        </div>
+
+
+     
+
+   
+
+       <!-- OVO IDE U JS -->
+       <form class="project-form">
+        <div class="project-form-input-box flex flex--center-v margin-bottom--es">
+          <i class="fa-solid fa-bars fa-2x"></i>
+          <input type="text" placeholder="Enter Project Name" class="  input-box-input margin-left--es"/>
+
+         </div>
+         <div class="project-form-btns flex flex--center gap--md">
+          <button class="btn btn--add">Add</button>
+          <button class="btn btn--cancel">Cancel</button>
+        </div>
+       </form>
+
+       <form class="project-form">
+        <div class="project-form-input-box flex flex--center-v margin-bottom--es">
+          <i class="fa-solid fa-bars fa-2x"></i>
+          <input type="text" class="  input-box-input margin-left--es"/>
+         </div>
+         <div class="project-form-btns flex flex--center gap--md">
+          <button class="btn btn--add">Rename</button>
+          <button class="btn btn--cancel">Cancel</button>
+        </div>
+       </form>
+
+
        <button class="project-add flex flex--center-v ">
         <i class="fa-regular fa-circle-xmark"></i>
         <span class="project-add--name margin-left--md">Add Project</span>
        </button>
+       
       </div>
     </aside>
 
@@ -62,7 +101,7 @@
       <div class="main">
         <h3 class="main-title heading-tertiary">Project</h3>
         <div class="tasks">
-          <ul class="tasks--lists margin-bottom--md">
+          <ul class="tasks--lists margin-left--sm ">
             <!-- OVO CES U JS, SAMO POKAZNO OVDE -->
             <li class="tasks--item margin-bottom--es">
               <div class="task">
@@ -79,7 +118,12 @@
 
                     <!-- <i class="fa-solid fa-star fa-2x" style="color:var(--color-yellow--dark)"></i> -->
                     <i class="fa-regular fa-star fa-2x"></i>
-                    <i class="fa-solid fa-ellipsis-vertical fa-2x"></i>         
+                    <i class="fa-solid fa-ellipsis-vertical fa-2x"></i> 
+                    <!-- I OVO IDE U JS -->
+                    <div class="pop-up pop-up--edit flex flex--column">
+                      <button>Edit</button>
+                      <button>Delete</button>
+                     </div>        
                   </div>
                 </div>
                 <div class="task-body">
@@ -97,7 +141,7 @@
                     <!-- Kad se klikne -->
                     <!-- <i class="fa-regular fa-circle-check" style="color:var(--color-green)"></i> -->
                     <i class="fa-regular fa-circle fa-2x"></i>
-                    <p class="subheading">Title</p>
+                    <p class="subheading">Clean House</p>
                   </div>
                   <div class="task-header--right flex flex--center-v gap--sm">
                     <div class="task-date">2023-09-04</div>
@@ -123,7 +167,34 @@
                     <!-- Kad se klikne -->
                     <!-- <i class="fa-regular fa-circle-check" style="color:var(--color-green)"></i> -->
                     <i class="fa-regular fa-circle fa-2x"></i>
-                    <p class="subheading">Title</p>
+                    <p class="subheading">Buy food</p>
+                  </div>
+                  <div class="task-header--right flex flex--center-v gap--sm">
+                    <div class="task-date">2023-09-04</div>
+                    <!-- Kad se klikne popuni se-->
+
+                    <!-- <i class="fa-solid fa-star fa-2x" style="color:var(--color-yellow--dark)"></i> -->
+                    <i class="fa-regular fa-star fa-2x"></i>
+                    <i class="fa-solid fa-ellipsis-vertical fa-2x"></i>         
+                  </div>
+                </div>
+                <div class="task-body">
+                  <p class="task-body--text">
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                  </p>
+                </div>
+              </div>
+            </li>
+
+            
+            <li class="tasks--item margin-bottom--es">
+              <div class="task">
+                <div class="task-header flex">
+                  <div class="task-header--left flex flex--center-v gap--es">
+                    <!-- Kad se klikne -->
+                    <!-- <i class="fa-regular fa-circle-check" style="color:var(--color-green)"></i> -->
+                    <i class="fa-regular fa-circle fa-2x"></i>
+                    <p class="subheading">Buy food</p>
                   </div>
                   <div class="task-header--right flex flex--center-v gap--sm">
                     <div class="task-date">2023-09-04</div>
@@ -142,6 +213,29 @@
               </div>
             </li>
           </ul>
+
+          <!-- OVO IDE U JS -->
+          <form class="tasks-form flex flex--column gap--sm margin-top--sm ">
+            <div class="input-box flex flex--column">
+              <label class="input-box-label" for="title">Title *</label>
+              <input class="input-box-input" id="title" type="text" placeholder="What to do ?" required/>
+            </div>
+
+            <div class="input-box flex flex--column">
+              <label class="input-box-label"  for="details">Details</label>
+              <input class="input-box-input" id="details" placeholder="eg:I'm just gonna procrastinate, aren't i?" type="text" />
+            </div>
+
+            <div class="input-box flex flex--column">
+              <label class="input-box-label" for="date">Date *</label>
+              <input class="input-box-input" id="date" type="date" required/>
+            </div>
+
+            <div class="tasks-form-btns flex flex--center gap--md">
+              <button class="btn btn--add">Add</button>
+              <button class="btn btn--cancel">Cancel</button>
+            </div>
+          </form>
           <button class="task-add flex flex--center">
             <i class="fa-regular fa-circle-xmark"></i>
             <span class="task-add--name margin-left--md">Add Task</span>
