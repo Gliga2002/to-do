@@ -5,7 +5,7 @@
   --color-green--darker:#07ac61;
   --color-red:#ff0000;
   --color-yellow:#ecef1f;
-  --color-yellow--dark:#d3d60c;
+  --color-yellow--dark:#bcd11f;
   --color-cream--soft:#f2f3f5;
   --color-cream--dark:#ececec;
   --color-white:#ffffff;
@@ -163,6 +163,8 @@
 .checked .subheading {
   text-decoration: line-through;
 }
+
+
 
 .checked .task-header--right {
   display: none;

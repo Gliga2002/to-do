@@ -56,71 +56,52 @@ import {getTaskArray,pushToTaskArray, getTaskById} from "../taskCollection";
   const tasksItemsEl = document.querySelector('.tasks-items');
 
   tasksItemsEl.addEventListener('click', function(e) {
-    // const circleIcon = document.querySelector('.fa-circle');
-    // const fillCircleIcon = document.querySelector('.fa-circle--check');
-    // const starIcon = document.querySelector('.fa-star--unfill');
-    // const fillStarIcon = document.querySelector('.fa-star--fill')
-
-
-    //refaktorisi
-
     const uncheckCircle = e.target.closest('.fa-circle')
     if(uncheckCircle) {
-      const liEl = uncheckCircle.closest('li');
-      liEl.classList.add('checked')
-      const liId = liEl.dataset.taskId;
-      const task = getTaskById(Number(liId))
-      const isCompleted = task.setIsCompleted();
-      const checkCircle = document.querySelector(`.fa-circle--check[data-task-id='${liId}']`)
-      renderIcon(isCompleted, uncheckCircle,checkCircle )
-
-      
-      
+      const  changedTaskStatus = changeTaskStatus(uncheckCircle);
+      const checkCircle = document.querySelector(`.fa-circle--check[data-task-id='${changedTaskStatus.id}']`)
+      renderIcon( changedTaskStatus.status, uncheckCircle,checkCircle ) 
     }
 
     const checkCircle = e.target.closest('.fa-circle--check')
     if(checkCircle) {
-      const liEl = checkCircle.closest('li');
-      liEl.classList.remove('checked')
-      const liId = liEl.dataset.taskId;
-      const task = getTaskById(Number(liId))
-      const isCompleted = task.setIsCompleted();
-      const uncheckCircle = document.querySelector(`.fa-circle--uncheck[data-task-id='${liId}']`)
-      renderIcon(isCompleted, uncheckCircle, checkCircle)
-
-      
+      const  changedTaskStatus = changeTaskStatus(checkCircle);
+      const uncheckCircle = document.querySelector(`.fa-circle--uncheck[data-task-id='${changedTaskStatus.id}']`)
+      renderIcon( changedTaskStatus.status, uncheckCircle, checkCircle)
     }
 
     const unfillStar = e.target.closest('.fa-star--unfill')
     if(unfillStar) {
-      const liEl = unfillStar.closest('li');
-      const liId = liEl.dataset.taskId;
-      const task = getTaskById(Number(liId))
-      const isImportant = task.setIsImportant();
-      const filledStar = document.querySelector(`.fa-star--fill[data-task-id='${liId}']`)
-      renderIcon(isImportant, unfillStar, filledStar)
-      
+      const changedTaskStatus = changeTaskStatus(unfillStar);
+      const filledStar = document.querySelector(`.fa-star--fill[data-task-id='${ changedTaskStatus.id}']`)
+      renderIcon( changedTaskStatus.status, unfillStar, filledStar)
     }
 
     const fillStar = e.target.closest('.fa-star--fill')
     if(fillStar) {
-      const liEl = fillStar.closest('li');
-      const liId = liEl.dataset.taskId;
-      const task = getTaskById(Number(liId))
-      const isImportant = task.setIsImportant();
-      const unfillStar = document.querySelector(`.fa-star--unfill[data-task-id='${liId}']`)
-      renderIcon(isImportant, unfillStar, fillStar)
-      
+      const  changedTaskStatus = changeTaskStatus(fillStar);
+      const unfillStar = document.querySelector(`.fa-star--unfill[data-task-id='${ changedTaskStatus.id}']`)
+      renderIcon(changedTaskStatus.status, unfillStar, fillStar)  
     }
     
   })
  }
 
+ function changeTaskStatus(iconEl) {
+  const liEl = iconEl.closest('li');
+  if(iconEl.classList.contains('fa-circle--check')) liEl.classList.remove('checked')
+  if(iconEl.classList.contains('fa-circle--uncheck')) liEl.classList.add('checked')
+  const liId = liEl.dataset.taskId;
+  const task = getTaskById(Number(liId))
+  const status = iconEl.classList.contains('circle') ? task.setIsCompleted() : task.setIsImportant()
+
+  return {id: liId, status}
+
+ }
+
 
  function renderIcon(condition, emptyIcon, fillIcon) {
   if(condition) {
-    console.log(emptyIcon)
-    console.log(fillIcon);
     fillIcon.classList.remove('hidden');
     emptyIcon.classList.add('hidden');
   } else {
@@ -128,8 +109,6 @@ import {getTaskArray,pushToTaskArray, getTaskById} from "../taskCollection";
     emptyIcon.classList.remove('hidden');
   }
  }
-
-
 
  export function setInitSectionMain() {
   const allTasksHomeEl = document.querySelector('.home--all-tasks');
