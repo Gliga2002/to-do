@@ -1,7 +1,12 @@
-import test from './applicationLogic.js'
+import {homeListener, projectListener} from './DOM/sectionAside';
+import {setInitSectionMain} from './DOM/sectionMain';
 import './css/style.css';
 import './css/general.css';
 
-test();
+setInitSectionMain();
+homeListener();
+projectListener();
+
+
 
 console.log('TEST');

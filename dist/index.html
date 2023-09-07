@@ -27,7 +27,7 @@
     <aside class="section-aside">
       <p class="heading-secondary section-aside-title">Home</p>
       <div class="homes flex flex--column gap--es margin-bottom--sm">
-        <div class="home home--all-tasks flex gap--es">
+        <div class="home home--all-tasks flex gap--es ">
           <i class="fa-solid fa-clipboard fa-2x"></i>
           <p class="subheading">All Tasks</p>
         </div>
@@ -44,198 +44,96 @@
           <p class="subheading">Important</p>
         </div>
       </div>
-      <p class="heading-secondary section-aside--title">Projects</p>
-      <!-- I OVO IDE U JS -->
+      <p class="heading-secondary section-aside-title">Projects</p>
+ 
       <div class="projects flex flex--column gap--md">
-       <div class="project flex flex--center-v">
+
+       
+        <!-- I OVO IDE U JS -->
+       <!-- <div class="project flex flex--center-v">
         <i class="fa-solid fa-bars fa-2x"></i>
         <p class="project-name">Shopping</p>
-        <i class="fa-solid fa-ellipsis-vertical fa-2x"></i>
+        <i class="project-dots fa-solid fa-ellipsis-vertical fa-2x"></i>
 
-         <!-- OVO ISTO IDE U JS -->
-        <div class="pop-up pop-up--rename flex flex--column">
-          <button class="pop-up-btn">Rename</button>
-          <button class="pop-up-btn">Delete</button>
+        <div class="pop-up pop-up--rename flex flex--column hidden">
+          <button class="pop-up-rename pop-up-btn">Rename</button>
+          <button class="pop-up-delete pop-up-btn">Delete</button>
          </div>
-       </div>
+       </div>  -->
+
+
 
         <!-- I OVO IDE U JS -->
-        <form class="project-form rename-project">
+        <!-- <form class="project-form rename-project hidden">
           <div class="project-form-input-box flex flex--center-v margin-bottom--es">
             <i class="fa-solid fa-bars fa-2x"></i>
             <input type="text" class="input-box-input margin-left--es"/>
            </div>
            <div class="project-form-btns flex flex--center gap--md">
-            <button class="btn btn--add">Rename</button>
+            <button class="btn btn--rename">Rename</button>
             <button class="btn btn--cancel">Cancel</button>
           </div>
-         </form>
+         </form>  -->
 
 
     
        <!-- OVO IDE U JS -->
-       <form class="project-form add-project">
+       <form class="project-form add-project hidden">
         <div class="project-form-input-box flex flex--center-v margin-bottom--es">
           <i class="fa-solid fa-bars fa-2x"></i>
-          <input type="text" placeholder="Enter Project Name" class="input-box-input margin-left--es"/>
+          <input type="text" name='projectName' placeholder="Enter Project Name" class="input-box-input margin-left--es"/>
          </div>
          <div class="project-form-btns flex flex--center gap--md">
           <button class="btn btn--add">Add</button>
           <button class="btn btn--cancel">Cancel</button>
         </div>
-       </form>
+       </form> 
 
-      
-
-
-       <button class="add-project-btn flex flex--center-v ">
+    
+       <button class="add-project-btn flex flex--center-v">
         <i class="fa-regular fa-circle-xmark"></i>
         <span class="add-project-btn-name margin-left--md">Add Project</span>
        </button>
-       
       </div>
     </aside>
 
+
+
+
+
+
     <section class="section-main">
       <div class="main">
-        <h3 class="main-title heading-tertiary">Project</h3>
+        <h3 class="main-title">Project</h3>
         <div class="tasks">
           <ul class="tasks-items margin-left--sm ">
             <!-- OVO CES U JS, SAMO POKAZNO OVDE -->
-            <li class="tasks-item margin-bottom--es">
-              <div class="task">
-                <div class="task-header flex">
-                  <div class="task-header--left flex flex--center-v gap--es">
-                    <!-- Kad se klikne -->
-                    <!-- <i class="fa-regular fa-circle-check" style="color:var(--color-green)"></i> -->
-                    <i class="fa-regular fa-circle fa-2x"></i>
-                    <p class="subheading">Title</p>
-                  </div>
-                  <div class="task-header--right flex flex--center-v gap--sm">
-                    <div class="task-date">2023-09-04</div>
-                    <!-- Kad se klikne popuni se-->
-
-                    <!-- <i class="fa-solid fa-star fa-2x" style="color:var(--color-yellow--dark)"></i> -->
-                    <i class="fa-regular fa-star fa-2x"></i>
-                    <i class="fa-solid fa-ellipsis-vertical fa-2x"></i> 
-                    <!-- I OVO IDE U JS -->
-                    <div class="pop-up pop-up--edit flex flex--column">
-                      <button class="pop-up-btn">Edit</button>
-                      <button class="pop-up-btn">Delete</button>
-                     </div>        
-                  </div>
-                </div>
-                <div class="task-body">
-                  <p class="task-body-text">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                  </p>
-                </div>
-              </div>
-            </li>
-
-            <li class="tasks-item margin-bottom--es">
-              <div class="task">
-                <div class="task-header flex">
-                  <div class="task-header--left flex flex--center-v gap--es">
-                    <!-- Kad se klikne -->
-                    <!-- <i class="fa-regular fa-circle-check" style="color:var(--color-green)"></i> -->
-                    <i class="fa-regular fa-circle fa-2x"></i>
-                    <p class="subheading">Clean House</p>
-                  </div>
-                  <div class="task-header--right flex flex--center-v gap--sm">
-                    <div class="task-date">2023-09-04</div>
-                    <!-- Kad se klikne popuni se-->
-
-                    <!-- <i class="fa-solid fa-star fa-2x" style="color:var(--color-yellow--dark)"></i> -->
-                    <i class="fa-regular fa-star fa-2x"></i>
-                    <i class="fa-solid fa-ellipsis-vertical fa-2x"></i>         
-                  </div>
-                </div>
-                <div class="task-body">
-                  <p class="task-body-text">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                  </p>
-                </div>
-              </div>
-            </li>
-
-            <li class="tasks-item margin-bottom--es">
-              <div class="task">
-                <div class="task-header flex">
-                  <div class="task-header--left flex flex--center-v gap--es">
-                    <!-- Kad se klikne -->
-                    <!-- <i class="fa-regular fa-circle-check" style="color:var(--color-green)"></i> -->
-                    <i class="fa-regular fa-circle fa-2x"></i>
-                    <p class="subheading">Buy food</p>
-                  </div>
-                  <div class="task-header--right flex flex--center-v gap--sm">
-                    <div class="task-date">2023-09-04</div>
-                    <!-- Kad se klikne popuni se-->
-
-                    <!-- <i class="fa-solid fa-star fa-2x" style="color:var(--color-yellow--dark)"></i> -->
-                    <i class="fa-regular fa-star fa-2x"></i>
-                    <i class="fa-solid fa-ellipsis-vertical fa-2x"></i>         
-                  </div>
-                </div>
-                <div class="task-body">
-                  <p class="task-body-text">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                  </p>
-                </div>
-              </div>
-            </li>
-
             
-            <li class="tasks--item margin-bottom--es">
-              <div class="task">
-                <div class="task-header flex">
-                  <div class="task-header--left flex flex--center-v gap--es">
-                    <!-- Kad se klikne -->
-                    <!-- <i class="fa-regular fa-circle-check" style="color:var(--color-green)"></i> -->
-                    <i class="fa-regular fa-circle fa-2x"></i>
-                    <p class="subheading">Eat food</p>
-                  </div>
-                  <div class="task-header--right flex flex--center-v gap--sm">
-                    <div class="task-date">2023-09-04</div>
-                    <!-- Kad se klikne popuni se-->
-
-                    <!-- <i class="fa-solid fa-star fa-2x" style="color:var(--color-yellow--dark)"></i> -->
-                    <i class="fa-regular fa-star fa-2x"></i>
-                    <i class="fa-solid fa-ellipsis-vertical fa-2x"></i>         
-                  </div>
-                </div>
-                <div class="task-body">
-                  <p class="task-body-text">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                  </p>
-                </div>
-              </div>
-            </li>
           </ul>
 
           <!-- OVO IDE U JS -->
-          <form class="tasks-form flex flex--column gap--sm margin-top--sm ">
+          <form class="tasks-form flex flex--column gap--sm margin-top--sm hidden">
             <div class="input-box flex flex--column">
               <label class="input-box-label" for="title">Title *</label>
-              <input class="input-box-input" id="title" type="text" placeholder="What to do ?" required/>
+              <input class="input-box-input" id="title" type="text" name="title" placeholder="What to do ?" required/>
             </div>
 
             <div class="input-box flex flex--column">
               <label class="input-box-label"  for="details">Details</label>
-              <input class="input-box-input" id="details" placeholder="eg:I'm just gonna procrastinate, aren't i?" type="text" />
+              <input class="input-box-input" id="details" placeholder="eg:I'm just gonna procrastinate, aren't i?" type="text" name="details"/>
             </div>
 
             <div class="input-box flex flex--column">
               <label class="input-box-label" for="date">Date *</label>
-              <input class="input-box-input" id="date" type="date" required/>
+              <input class="input-box-input" id="date" type="date" name="date" required/>
             </div>
 
             <div class="tasks-form-btns flex flex--center gap--md">
-              <button class="btn btn--add">Add</button>
-              <button class="btn btn--cancel">Cancel</button>
+              <button type="submit" class="btn btn--add btn--add-task">Add</button>
+              <button type="button"  class="btn btn--cancel btn--cancel-task">Cancel</button>
             </div>
           </form>
-          <button class="add-task-btn flex flex--center">
+          <button class="add-task-btn flex flex--center margin-top--sm">
             <i class="fa-regular fa-circle-xmark"></i>
             <span class="add-task-btn-name margin-left--md">Add Task</span>
            </button>

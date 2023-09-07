@@ -76,6 +76,10 @@
  background-color:  var(--color-cream--soft);
 }
 
+.home--clicked {
+  background-color: var(--color-cream--soft);
+}
+
 .project {
   position:relative;
   background-color: var(--color-cream--soft);
@@ -130,8 +134,9 @@
   padding:2rem;
   border-radius:3px;
   margin-bottom: 1rem;
-  letter-spacing: 0.3px;
+  letter-spacing: -0.3px;
   font-weight: normal;
+  font-size: 4rem;
   margin-bottom: 3rem;
 }
 
@@ -157,6 +162,8 @@
 .task-header--right {
   position:relative;
 }
+
+
 
 .task-date {
   font-size: 1.3rem;
@@ -195,7 +202,8 @@
   font-size:1.5rem;
 }
 
-.btn--add {
+.btn--add,
+.btn--rename {
   border: 3px solid var(--color-green--darker);
   background-color: var(--color-green--darker);
   color:var(--color-white);
