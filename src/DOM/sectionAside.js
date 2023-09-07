@@ -1,7 +1,6 @@
 import { renderSectionMain} from "./sectionMain";
-import taskCollection from "../taskCollection";
+import {checkHeadType, getTaskArray,getTasksByProjectName } from "../taskCollection";
 
-const taskArrayFunctions = taskCollection();
 
 export function homeListener() {
   const homesEl = document.querySelector('.homes');
@@ -14,7 +13,7 @@ export function homeListener() {
 
     const homeTitle= homeEl.children[1].textContent;
 
-    const filteredTaskArray = checkHeadType(homeTitle, taskArrayFunctions.getTaskArray())
+    const filteredTaskArray = checkHeadType(homeTitle, getTaskArray())
     renderSectionMain(homeTitle, filteredTaskArray);
 
     removeAddTaskBtn()
@@ -56,7 +55,7 @@ export function projectListener() {
       const projectName = projectEl.children[1].textContent;
       renderSectionMain(
         projectName,
-        taskArrayFunctions.getTasksByProjectName(projectName));
+        getTasksByProjectName(projectName));
 
       addAddTaskBtn();
     }
@@ -66,7 +65,6 @@ export function projectListener() {
 function projectFormListener() {
   const projectFormEl = document.querySelector('.add-project');
   const inputProjectEl = document.querySelector('.add-project .input-box-input');
-  const mainTitle = document.querySelector('.main-title')
   
   projectFormEl.addEventListener('click',(e) => {
     e.preventDefault();
@@ -82,7 +80,7 @@ function projectFormListener() {
 
      projectFormEl.classList.add('hidden');
 
-     mainTitle.textContent = projectName;
+     renderSectionMain(projectName,getTasksByProjectName(projectName))
     }
 
 
@@ -96,8 +94,6 @@ export function getInputValue(inputEl) {
   inputEl.value = "";
   return inputValue;
 }
-
-
 
 function renderProjectEl(projectFormEl, projectName) {
   const projectsEl = document.querySelector('.projects');
@@ -128,10 +124,4 @@ function createProjectEl(projectName) {
   return projectDiv;
 }
 
-// Treba da se zavrsi
-function checkHeadType(homeTitle, array) {
-  if(homeTitle === 'All Tasks') return array;
-  if(homeTitle === 'Today') return array
-  if(homeTitle === 'Next 7 Days') return array
-  if(homeTitle === 'Important') return array
-}
+

@@ -1,17 +1,13 @@
 import { removeAddTaskBtn, getInputValue} from "./sectionAside";
 import createTask from "../createTask";
-import taskCollection from "../taskCollection";
-const taskArrayFunctions = taskCollection();
-
+import {getTaskArray,pushToTaskArray} from "../taskCollection";
 
 export function setInitSectionMain() {
   const allTasksHomeEl = document.querySelector('.home--all-tasks');
   allTasksHomeEl.classList.add('home--clicked');
-  renderSectionMain('All Tasks', taskArrayFunctions.getTaskArray());
+  renderSectionMain('All Tasks', getTaskArray());
   removeAddTaskBtn();
 }
-
-
 
  function addTaskBtnListener() {
   const addTaskBtnEl = document.querySelector('.add-task-btn');
@@ -45,9 +41,7 @@ export function setInitSectionMain() {
 
     const task = createTask(taskItems);
 
-    taskArrayFunctions.pushToTaskArray(task);
-
-
+    pushToTaskArray(task);
 
     sectionMainUlEl.append(renderTask(task));
 
@@ -120,5 +114,4 @@ function renderTask(task) {
 </div>`;
 
 return liEl;
-
 }
