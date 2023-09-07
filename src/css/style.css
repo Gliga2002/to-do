@@ -154,6 +154,20 @@
   padding:5px;
 }
 
+/* CHECKED TASK */
+.checked {
+  opacity:0.5;
+  transform: scale(0.96);
+}
+
+.checked .subheading {
+  text-decoration: line-through;
+}
+
+.checked .task-header--right {
+  display: none;
+}
+
 .task-header {
   align-items: center;
   justify-content: space-between;

@@ -26,6 +26,11 @@ export function getTasksByProjectName(projectName) {
   return filteredArray;
 }
 
+
+export function getTaskById(taskId) {
+  return taskArray.find(task =>task.id === taskId);
+}
+
 export function updateProjectNameTask(oldProjectName, newProjectName) {
   taskArray = taskArray.filter(task => task.projectName === oldProjectName).map(task => task.projectName = newProjectName);
   return taskArray;
