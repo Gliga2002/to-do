@@ -7,6 +7,26 @@
 }
 
 
+:root {
+  --color--blackish:#374958;
+  --color--blackish--soft:#dddddd;
+  --color-green:#2abd67;
+  --color-green--darker:#07ac61;
+  --color--green--light:#81e1b6;
+  --color--green--light--darker:#49de9b;
+  --color-red:#ff0000;
+  --color-yellow:#ecef1f;
+  --color-yellow--dark:#bcd11f;
+  --color-cream--soft:#f2f3f5;
+  --color-cream--dark:#ececec;
+  --color-white:#ffffff;
+
+  --bgColor1:#22303c;
+  --bgColor2:#15202b;
+  --bgColor3:#192734;
+  --moon:#5698a3;
+}
+
 html {
   /* font-size: 10px; */
   /* 10px / 16px = 0.625 = 62.5% */
@@ -19,6 +39,7 @@ body {
   line-height: 1;
   font-weight: 400;
   color: var(--color--blackish);
+  transition: all 0.3s;
 }
 
 
@@ -146,3 +167,41 @@ main {
 .clicked {
   pointer-events: none;
 }
+
+/* DARK MODE */
+
+.dark {
+  color:var(--color-white);
+}
+
+.dark header {
+  background-color: var(--bgColor1);
+}
+
+.dark aside {
+  background-color: var(--bgColor2);
+}
+
+  .dark aside .heading-secondary {
+    border-bottom: 2px solid var(--color-white);
+  }
+
+  .dark aside .home.active,
+  .dark aside .home:hover,
+  .dark aside .project,
+  .dark aside .project-form
+   {
+    color:var(--color--blackish);
+  }
+
+
+.dark section {
+  background-color: var(--bgColor3);
+}
+
+  .dark section .task,
+  .dark section .task-date {
+    border:1.5px solid var(--color-white);
+  }
+
+
