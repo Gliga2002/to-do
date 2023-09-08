@@ -152,7 +152,7 @@
   border:1.5px solid var(--color--blackish);
   border-radius:5px;
   padding:5px;
-  
+
 }
 
 /* CHECKED TASK */
@@ -196,7 +196,8 @@
 }
 
 /* TASK FORM*/
-.tasks-form {
+.tasks-form,
+.tasks-form--edit{
   padding:1rem 2rem;
   background-color: var(--color-white);
 }

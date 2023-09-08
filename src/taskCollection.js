@@ -11,9 +11,15 @@ export function pushToTaskArray(task) {
   console.log(taskArray);
 }
 
-export function deleteTasksByProjectName(projectName) {
-  taskArray = taskArray.filter((task) => task.projectName !== projectName)
-  return taskArray;
+export function deleteTasksById(taskId) {
+  console.log('Before deletion');
+  console.log(taskArray);
+  taskArray = taskArray.filter((task) =>{
+    console.log(task.id, taskId);
+    return task.id !== taskId
+  });
+  console.log('After Deletion');
+  console.log(taskArray);
 }
 
 export function getTasksByProjectName(projectName) {
@@ -34,6 +40,15 @@ export function getTaskById(taskId) {
 export function updateProjectNameTask(oldProjectName, newProjectName) {
   taskArray = taskArray.filter(task => task.projectName === oldProjectName).map(task => task.projectName = newProjectName);
   return taskArray;
+}
+
+export function updateTask(taskId,taskItems)  {
+  const task = getTaskById(Number(taskId));
+  task.projectName = taskItems.projectName;
+  task.title = taskItems.title;
+  task.details = taskItems.details;
+  task.date = taskItems.date;
+  return task;
 }
 
 export function checkHeadType(homeTitle, array) {
