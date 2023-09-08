@@ -76,7 +76,7 @@
  background-color:  var(--color-cream--soft);
 }
 
-.home--clicked {
+.active {
   background-color: var(--color-cream--soft);
 }
 

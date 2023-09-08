@@ -202,7 +202,7 @@ import {getTaskArray,pushToTaskArray, getTaskById, deleteTasksById, updateTask,c
 
  export function setInitSectionMain() {
   const allTasksHomeEl = document.querySelector('.home--all-tasks');
-  allTasksHomeEl.classList.add('home--clicked');
+  allTasksHomeEl.classList.add('active');
   renderSectionMain('All Tasks', getTaskArray());
   removeAddTaskBtn();
 }

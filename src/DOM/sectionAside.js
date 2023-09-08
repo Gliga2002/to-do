@@ -2,19 +2,46 @@ import { renderSectionMain} from "./sectionMain";
 import {checkHeadType, getTaskArray,getTasksByProjectName } from "../taskCollection";
 
 
+export function asideListener() {
+  const asideEl = document.querySelector('aside');
+  const allTasksHomeEl = document.querySelector('.home--all-tasks');
+
+  let previousClickedEl = allTasksHomeEl;
+
+  asideEl.addEventListener('click', (e) => {
+    const homeEl = e.target.closest('.home')
+    const projectEl = e.target.closest('.project');
+    const addBtnEl = e.target.closest('.btn--add')
+
+    if(homeEl) previousClickedEl = setActiveClass(homeEl, previousClickedEl)
+     
+    if(projectEl) previousClickedEl = setActiveClass(projectEl, previousClickedEl)
+
+    // Remove prevActiveHome
+    if(addBtnEl) previousClickedEl.classList.remove('active');
+
+  })
+}
+
+
+
+function setActiveClass(activeEl, prevActiveEl) {
+  console.log(prevActiveEl)
+  if(prevActiveEl) prevActiveEl.classList.remove('active');
+      activeEl.classList.add('active');
+      prevActiveEl = activeEl;
+      console.log(prevActiveEl);
+      return prevActiveEl;
+}
+
+
+
 export function homeListener() {
   const homesEl = document.querySelector('.homes');
-  const homeArray = document.querySelectorAll('.home')
 
   homesEl.addEventListener('click', function(e) {
     const homeEl = e.target.closest('.home');
-    if(!homeEl) {
-      removeClickedClass(homeArray);
-      return;
-    }
-
-    removeClickedClass(homeArray);
-    homeEl.classList.add('home--clicked');
+    if(!homeEl) return;
 
     const homeTitle= homeEl.children[1].textContent;
 
@@ -25,12 +52,6 @@ export function homeListener() {
   })
 }
 
-
-function removeClickedClass(homesEl) {
-  homesEl.forEach(homeEl => {
-    if(homeEl.classList.contains('home--clicked')) homeEl.classList.remove('home--clicked'); 
-  })
-}
 
 export function removeAddTaskBtn() {
   document.querySelector('.add-task-btn').classList.add('hidden');
