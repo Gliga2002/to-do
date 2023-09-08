@@ -9,10 +9,16 @@ import {getTaskArray,pushToTaskArray, getTaskById} from "../taskCollection";
   const taskFormEl = document.querySelector('.tasks-form');
  
   addTaskBtnEl.addEventListener('click',() => {
+     console.log('OTVORI FORMU');
+    //  const taskFormEl = createTaskForm();
+    //  tasksDiv.insertBefore(taskFormEl, addTaskBtnEl);
      toggleTaskForm(taskFormEl);
+    
   })
  }
  addTaskBtnListener();
+
+
 
 
  function toggleTaskForm(taskFormEl) {
@@ -20,6 +26,7 @@ import {getTaskArray,pushToTaskArray, getTaskById} from "../taskCollection";
  }
 
  function submitTaskFormListener() {
+  console.log('OVDE')
   const taskFormEl = document.querySelector('.tasks-form');
   const btnCancelTaskEl = document.querySelector('.btn--cancel-task');
   const sectionMainUlEl = document.querySelector('.tasks-items');
@@ -51,6 +58,7 @@ import {getTaskArray,pushToTaskArray, getTaskById} from "../taskCollection";
 
  }
  submitTaskFormListener();
+ 
 
  export function addTasksItemsListener() {
   const tasksItemsEl = document.querySelector('.tasks-items');
@@ -83,6 +91,16 @@ import {getTaskArray,pushToTaskArray, getTaskById} from "../taskCollection";
       const unfillStar = document.querySelector(`.fa-star--unfill[data-task-id='${ changedTaskStatus.id}']`)
       renderIcon(changedTaskStatus.status, unfillStar, fillStar)  
     }
+
+    const verticalDots = e.target.closest('.fa-ellipsis-vertical')
+    if(verticalDots) {
+      const liEl = verticalDots.closest('li');
+      const liId = liEl.dataset.taskId;
+      const popUpEditEl = document.querySelector(`.pop-up--edit[data-task-id='${liId}'`);
+      popUpEditEl.classList.toggle('hidden');
+    }
+
+    
     
   })
  }
@@ -109,6 +127,9 @@ import {getTaskArray,pushToTaskArray, getTaskById} from "../taskCollection";
     emptyIcon.classList.remove('hidden');
   }
  }
+
+
+
 
  export function setInitSectionMain() {
   const allTasksHomeEl = document.querySelector('.home--all-tasks');
@@ -162,7 +183,7 @@ function renderTask(task) {
         <i class="fa-solid fa-star fa-star--fill hidden fa-2x" style="color: #bcd11f;" data-task-id='${task.id}'></i>
         <i class="fa-regular fa-star fa-star--unfill fa-2x" data-task-id='${task.id}'></i>
         <i class="fa-solid fa-ellipsis-vertical fa-2x"></i> 
-        <div class="pop-up pop-up--edit flex flex--column hidden">
+        <div class="pop-up pop-up--edit flex flex--column hidden" data-task-id='${task.id}'>
           <button class="pop-up-btn">Edit</button>
           <button class="pop-up-btn">Delete</button>
           </div>        
