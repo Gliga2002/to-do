@@ -1,6 +1,6 @@
 import { removeAddTaskBtn, getInputValue} from "./sectionAside";
-import createTask from "../createTask";
-import {getTaskArray,pushToTaskArray, getTaskById, deleteTasksById, updateTask} from "../taskCollection";
+// import createTask from "../createTask";
+import {getTaskArray,pushToTaskArray, getTaskById, deleteTasksById, updateTask,createTask} from "../taskCollection";
 
 
 
@@ -44,7 +44,7 @@ import {getTaskArray,pushToTaskArray, getTaskById, deleteTasksById, updateTask} 
      taskParent.append(renderTask(task));
     } else {
       const task = createTask(taskItems);
-      pushToTaskArray(task);
+      task.pushToTaskArray();
       taskParent.append(renderTask(task));
     }
 
@@ -60,6 +60,7 @@ import {getTaskArray,pushToTaskArray, getTaskById, deleteTasksById, updateTask} 
 
  }
 
+
  
 
  export function addTasksItemsListener() {
@@ -72,31 +73,36 @@ import {getTaskArray,pushToTaskArray, getTaskById, deleteTasksById, updateTask} 
     const fillStar = e.target.closest('.fa-star--fill');
     const verticalDots = e.target.closest('.fa-ellipsis-vertical');
 
+
     if(uncheckCircle) {
       const  changedTaskStatus = changeTaskStatus(uncheckCircle);
-      const checkCircle = document.querySelector(`.fa-circle--check[data-task-id='${changedTaskStatus.id}']`)
-      renderIcon( changedTaskStatus.status, uncheckCircle,checkCircle ) 
+      const circleBoxEl = document.querySelector(`.task-header--circle-box[data-task-id='${changedTaskStatus.id}']`);
+      circleBoxEl.innerHTML = '';
+      circleBoxEl.innerHTML = `<i class="fa-solid fa-circle-check fa-circle--check fa-2x" style="color: #3fca48;" data-task-id='${changedTaskStatus.id}'></i>`
     }
 
     
     if(checkCircle) {
       const  changedTaskStatus = changeTaskStatus(checkCircle);
-      const uncheckCircle = document.querySelector(`.fa-circle--uncheck[data-task-id='${changedTaskStatus.id}']`)
-      renderIcon( changedTaskStatus.status, uncheckCircle, checkCircle)
+      const circleBoxEl = document.querySelector(`.task-header--circle-box[data-task-id='${changedTaskStatus.id}']`);
+      circleBoxEl.innerHTML = '';
+      circleBoxEl.innerHTML = `<i class="fa-regular fa-circle fa-circle--uncheck fa-2x" data-task-id='${changedTaskStatus.id}'></i>`
     }
 
     
     if(unfillStar) {
       const changedTaskStatus = changeTaskStatus(unfillStar);
-      const filledStar = document.querySelector(`.fa-star--fill[data-task-id='${ changedTaskStatus.id}']`)
-      renderIcon( changedTaskStatus.status, unfillStar, filledStar)
+      const starBoxEl = document.querySelector(`.task-header--star-box[data-task-id='${changedTaskStatus.id}']`);
+      starBoxEl.innerHTML = '';
+      starBoxEl.innerHTML = `<i class="fa-solid fa-star fa-star--fill fa-2x" style="color: #bcd11f;"></i>`
     }
 
  
     if(fillStar) {
       const  changedTaskStatus = changeTaskStatus(fillStar);
-      const unfillStar = document.querySelector(`.fa-star--unfill[data-task-id='${ changedTaskStatus.id}']`)
-      renderIcon(changedTaskStatus.status, unfillStar, fillStar)  
+      const starBoxEl = document.querySelector(`.task-header--star-box[data-task-id='${changedTaskStatus.id}']`);
+      starBoxEl.innerHTML = '';
+      starBoxEl.innerHTML =  `<i class="fa-regular fa-star fa-star--unfill fa-2x"></i>`  
     }
 
 
@@ -183,17 +189,15 @@ import {getTaskArray,pushToTaskArray, getTaskById, deleteTasksById, updateTask} 
  }
 
 
- function renderIcon(condition, emptyIcon, fillIcon) {
-  if(condition) {
-    fillIcon.classList.remove('hidden');
-    emptyIcon.classList.add('hidden');
-  } else {
-    fillIcon.classList.add('hidden');
-    emptyIcon.classList.remove('hidden');
-  }
- }
-
-
+//  function renderIcon(condition, emptyIcon, fillIcon) {
+//   if(condition) {
+//     fillIcon.classList.remove('hidden');
+//     emptyIcon.classList.add('hidden');
+//   } else {
+//     fillIcon.classList.add('hidden');
+//     emptyIcon.classList.remove('hidden');
+//   }
+//  }
 
 
  export function setInitSectionMain() {
@@ -234,19 +238,24 @@ function renderTasks(sectionMainUlEl, array) {
 function renderTask(task) {
   const liEl = document.createElement('li');
   liEl.classList.add('tasks-item','margin-bottom--es');
+  if(task.isCompleted) liEl.classList.add('checked');
   liEl.setAttribute('data-task-id',`${String(task.id)}`)
+  
   liEl.innerHTML = `
   <div class="task">
     <div class="task-header flex">
       <div class="task-header--left flex flex--center-v gap--es">
-        <i class="fa-solid fa-circle-check fa-circle--check fa-2x hidden" style="color: #3fca48;" data-task-id='${task.id}'></i>
-        <i class="fa-regular fa-circle fa-circle--uncheck fa-2x" data-task-id='${task.id}'></i>
-        <p class="subheading">${task.title}</p>
-      </div>
+       <div class='task-header--circle-box' data-task-id='${task.id}'>
+        ${task.isCompleted ? `<i class="circle fa-solid fa-circle-check fa-circle--check fa-2x " style="color: #3fca48;"></i>`  : `<i class="circle fa-regular fa-circle fa-circle--uncheck fa-2x"></i>`}
+        </div>
+          <p class="subheading">${task.title}</p>
+        </div>
+      
       <div class="task-header--right flex flex--center-v gap--sm">
         <div class="task-date">${task.date}</div>
-        <i class="fa-solid fa-star fa-star--fill hidden fa-2x" style="color: #bcd11f;" data-task-id='${task.id}'></i>
-        <i class="fa-regular fa-star fa-star--unfill fa-2x" data-task-id='${task.id}'></i>
+        <div class='task-header--star-box' data-task-id='${task.id}'>
+        ${task.isImportant ? `<i class="fa-solid fa-star fa-star--fill  fa-2x" style="color: #bcd11f;"></i>` : `<i class="fa-regular fa-star fa-star--unfill fa-2x"></i>`}
+        </div>
         <i class="fa-solid fa-ellipsis-vertical fa-2x"></i> 
         <div class="pop-up pop-up--task flex flex--column hidden" data-task-id='${task.id}'>
           <button class="pop-up-btn pop-up-btn--edit">Edit</button>

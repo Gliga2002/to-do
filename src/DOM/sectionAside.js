@@ -4,12 +4,17 @@ import {checkHeadType, getTaskArray,getTasksByProjectName } from "../taskCollect
 
 export function homeListener() {
   const homesEl = document.querySelector('.homes');
-  const homesElChild = document.querySelectorAll('.home');
+  const homeArray = document.querySelectorAll('.home')
 
-  homesEl.addEventListener('click', (e) => {
+  homesEl.addEventListener('click', function(e) {
     const homeEl = e.target.closest('.home');
-    if(!homeEl) return;
-    toggleActiveHome(homeEl, homesElChild);
+    if(!homeEl) {
+      removeClickedClass(homeArray);
+      return;
+    }
+
+    removeClickedClass(homeArray);
+    homeEl.classList.add('home--clicked');
 
     const homeTitle= homeEl.children[1].textContent;
 
@@ -20,12 +25,10 @@ export function homeListener() {
   })
 }
 
-function toggleActiveHome(clickedEl, homesEl) {
-  clickedEl.classList.add('home--clicked');
 
-  console.log(homesEl);
-  homesEl.forEach((homeEl) => {
-    if(homeEl !== clickedEl) homeEl.classList.remove('home--clicked');
+function removeClickedClass(homesEl) {
+  homesEl.forEach(homeEl => {
+    if(homeEl.classList.contains('home--clicked')) homeEl.classList.remove('home--clicked'); 
   })
 }
 
