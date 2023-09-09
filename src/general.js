@@ -7,3 +7,7 @@ export function getInputValue(inputEl) {
 export function setInputFocus(inputEl) {
   inputEl.select();
 }
+
+export function getElementId(element) {
+  return element.dataset.id;
+}

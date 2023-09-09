@@ -1,6 +1,6 @@
 import { renderSectionMain, setInitSectionMain, removeAddTaskBtn, addAddTaskBtn} from "./sectionMain";
 import {checkHeadType, getTaskArray,getTasksByProjectName,deleteAllTasksByProjectName, updateTasksProjectName} from "../taskCollection";
-import { getInputValue, setInputFocus} from "../general";
+import { getInputValue, setInputFocus, getElementId} from "../general";
 
 
 export function asideListener() {
@@ -105,7 +105,7 @@ function projectFormListener(projectFormEl, oldProjectName) {
     const cancelBtnEl = e.target.closest('.btn--cancel');
 
     const projectBoxEl = projectFormEl.closest('.project--box');
-    const boxId = projectBoxEl ? getProjectBoxId(projectBoxEl) : '';
+    const boxId = projectBoxEl ? getElementId(projectBoxEl) : '';
 
     if(addBtnEl) {
       const inputProjectEl = projectFormEl.querySelector('input.input-box-input');
@@ -135,16 +135,13 @@ function projectFormListener(projectFormEl, oldProjectName) {
   })
 }
 
-function getProjectBoxId(projectBox) {
-  return projectBox.dataset.projectId;
-}
 
 function projectBoxListener(projectBoxEl) {
   projectBoxEl.addEventListener('click', function(e) {
     const projectDots = e.target.closest('.project-dots');
     if(!projectDots) return;
 
-    const projectBoxId = getProjectBoxId(projectBoxEl);
+    const projectBoxId = getElement(projectBoxEl);
     const popUpProjectEl = document.querySelector(`.pop-up--project[data-project-id='${projectBoxId}'`);
     popUpProjectEl.classList.toggle('hidden');
     if(!popUpProjectEl.classList.contains('hidden')) popUpProjectElListener(popUpProjectEl);
@@ -208,7 +205,7 @@ function createProjectElInsideBox(projectName) {
   const projectId = Date.now();
   const projectBox = document.createElement('div');
   projectBox.classList.add('project--box');
-  projectBox.setAttribute('data-project-id',projectId);
+  projectBox.setAttribute('data-id',projectId);
 
   projectBox.innerHTML = createProject(projectName, projectId);
 
@@ -221,7 +218,7 @@ function createProject(projectName, projectId) {
   <p class="project-name">${projectName}</p>
   <i class="project-dots fa-solid fa-ellipsis-vertical fa-2x"></i>
 
-  <div class="pop-up pop-up--project flex flex--column hidden" data-project-id="${projectId}">
+  <div class="pop-up pop-up--project flex flex--column hidden" data-id="${projectId}">
     <button class="pop-up-btn pop-up-btn--rename">Rename</button>
     <button class="pop-up-btn pop-up-btn--delete">Delete</button>
   </div>
