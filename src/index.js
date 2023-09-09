@@ -1,5 +1,5 @@
 import addToggleViewportColorListener from './DOM/sectionHeader';
-import {homeListener, projectListener,asideListener} from './DOM/sectionAside';
+import {homeListener, projectsListener,asideListener} from './DOM/sectionAside';
 import {setInitSectionMain, addTasksItemsListener} from './DOM/sectionMain';
 
 import './css/style.css';
@@ -9,5 +9,5 @@ addToggleViewportColorListener();
 setInitSectionMain();
 asideListener();
 homeListener();
-projectListener();
+projectsListener();
 addTasksItemsListener()

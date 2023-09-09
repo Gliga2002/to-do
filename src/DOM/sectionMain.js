@@ -1,4 +1,4 @@
-import { removeAddTaskBtn, getInputValue} from "./sectionAside";
+import { getInputValue } from "../general";
 // import createTask from "../createTask";
 import {getTaskArray,pushToTaskArray, getTaskById, deleteTasksById, updateTask,createTask} from "../taskCollection";
 
@@ -203,7 +203,7 @@ import {getTaskArray,pushToTaskArray, getTaskById, deleteTasksById, updateTask,c
  export function setInitSectionMain() {
   const allTasksHomeEl = document.querySelector('.home--all-tasks');
   allTasksHomeEl.classList.add('active');
-  console.log('OVDE');
+  console.log('SET INIT SECTION MAIN');
   renderSectionMain('All Tasks', getTaskArray());
   removeAddTaskBtn();
 }
@@ -274,4 +274,12 @@ function renderTask(task) {
 
 return liEl;
 
+}
+
+export function removeAddTaskBtn() {
+  document.querySelector('.add-task-btn').classList.add('hidden');
+}
+
+export function addAddTaskBtn() {
+  document.querySelector('.add-task-btn').classList.remove('hidden');
 }

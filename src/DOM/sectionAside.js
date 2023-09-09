@@ -1,36 +1,41 @@
-import { renderSectionMain, setInitSectionMain} from "./sectionMain";
-import {checkHeadType, getTaskArray,getTasksByProjectName,deleteAllTasksByProjectName, updateTasksProjectName, isProjectNameExist} from "../taskCollection";
+import { renderSectionMain, setInitSectionMain, removeAddTaskBtn, addAddTaskBtn} from "./sectionMain";
+import {checkHeadType, getTaskArray,getTasksByProjectName,deleteAllTasksByProjectName, updateTasksProjectName} from "../taskCollection";
+import { getInputValue, setInputFocus} from "../general";
 
 
 export function asideListener() {
   const asideEl = document.querySelector('aside');
-  const allTasksHomeEl = document.querySelector('.home--all-tasks');
-
-  let previousClickedEl = allTasksHomeEl;
 
   asideEl.addEventListener('click', (e) => {
     const homeEl = e.target.closest('.home')
     const projectEl = e.target.closest('.project');
-    const addBtnEl = e.target.closest('.btn--add')
+    const deleteBtnEl = e.target.closest('.pop-up-btn--delete');
 
-    if(homeEl) previousClickedEl = setActiveClass(homeEl, previousClickedEl)
-     
-    if(projectEl) previousClickedEl = setActiveClass(projectEl, previousClickedEl)
-
-    // Remove prevActiveHome
-    if(addBtnEl) previousClickedEl.classList.remove('active');
-
+    if(homeEl) setActiveClass(homeEl)
+    
+    // Since deleteBtnEl is inside projectEl, i want to exlucde that btn when click projectEl
+    if(projectEl && !deleteBtnEl) setActiveClass(projectEl)
   })
 }
 
+function setActiveClass(activeEl) {
+  removePreviousActiveEl();
+  activeEl.classList.add('active');
+}
 
-
-function setActiveClass(activeEl, prevActiveEl) {
+function removePreviousActiveEl() {
+  removePreviousActiveHome();
   removePreviousActiveProject();
-  if(prevActiveEl) prevActiveEl.classList.remove('active');
-      activeEl.classList.add('active');
-      prevActiveEl = activeEl;
-      return prevActiveEl;
+}
+
+function removePreviousActiveProject() {
+  const projectNodeList = document.querySelectorAll('.project');
+  projectNodeList.forEach((project) => project.classList.remove('active'));
+}
+
+function removePreviousActiveHome() {
+  const homeNodeList = document.querySelectorAll('.home');
+  homeNodeList.forEach((home) => home.classList.remove('active'));
 }
 
 
@@ -42,202 +47,181 @@ export function homeListener() {
     const homeEl = e.target.closest('.home');
     if(!homeEl) return;
 
-    const homeTitle= homeEl.children[1].textContent;
+    const homeTitle= homeEl.querySelector('p.subheading').textContent;
+    const filteredTaskArray = checkHeadType(homeTitle, getTaskArray());
 
-    const filteredTaskArray = checkHeadType(homeTitle, getTaskArray())
-    renderSectionMain(homeTitle, filteredTaskArray);
-
-    removeAddTaskBtn()
+    renderSectionMainHomeTasks(homeTitle, filteredTaskArray);
   })
 }
 
-// ove dve fje ne trebaju tu da budu
-export function removeAddTaskBtn() {
-  document.querySelector('.add-task-btn').classList.add('hidden');
+function renderSectionMainHomeTasks(title, array) {
+  renderSectionMain(title, array);
+  removeAddTaskBtn()
 }
 
-function addAddTaskBtn() {
-  document.querySelector('.add-task-btn').classList.remove('hidden');
-}
 
-export function projectListener() {
+export function projectsListener() {
   const projectsEl = document.querySelector('.projects');
 
   projectsEl.addEventListener('click', function(e) {
     const projectEl = e.target.closest('.project');
-
     const projectAddBtnEl = e.target.closest('.add-project-btn');
-    const projectDots = e.target.closest('.project-dots')
 
-
-    const renameBtnEl = e.target.closest('.pop-up-btn--rename');
     const deleteBtnEl = e.target.closest('.pop-up-btn--delete');
 
     if(projectAddBtnEl) {
-
-      const projectFormEl = createProjectForm()
-
-      projectsEl.insertBefore(projectFormEl, projectAddBtnEl);
-      // create stardandr project form and insert it before projectAdd Btn El
-
-      projectFormListener(projectFormEl);
+      renderProjectFormBefore(projectAddBtnEl);
     }
 
-    if(projectDots) {
-      const projectBoxEl = projectDots.closest('.project--box');
-      const projectBoxId = projectBoxEl.dataset.projectId;
-      const popUpProjectEl = document.querySelector(`.pop-up--rename[data-project-id='${projectBoxId}'`);
-      popUpProjectEl.classList.toggle('hidden');
-      popUpProjectElListener(popUpProjectEl, projectBoxEl, projectBoxId);
+    // Since deleteBtnEl is inside projectEl, i want to exlucde that btn when click projectEl
+    if(projectEl  && !deleteBtnEl) {
+      const projectName = projectEl.querySelector('p.project-name').textContent;
+      const projectTasksArray = getTasksByProjectName(projectName);
+
+      renderSectionMainProjectTasks(projectName, projectTasksArray);
     }
-    
-
-    // Ako knilknem rename i delete button kao da sam kliknuo projectEl i ovo se izvrsava
-    if(projectEl && !renameBtnEl && !deleteBtnEl) {
-      console.log('OVDE SAM NA KRAJU')
-      const projectName = projectEl.children[1].textContent;
-      renderSectionMain(
-        projectName,
-        getTasksByProjectName(projectName));
-
-      addAddTaskBtn();
-    }
-
-  
   })
 }
 
-function popUpProjectElListener(popUpProjectEl,projectBoxEl, projectBoxId) {
-
-  
-  popUpProjectEl.addEventListener('click', (e) => {
-    const renameBtnEl = e.target.closest('.pop-up-btn--rename');
-    const deleteBtnEl = e.target.closest('.pop-up-btn--delete');
-    const projectName = projectBoxEl.children[0].children[1].textContent;
-   
-
-    if(renameBtnEl) {
-      projectBoxEl.innerHTML = '';
-      // apenduj samo createRenameProjectForm (ista kao prosla)
-      const projectFormEl = createProjectForm(projectName)
-      projectBoxEl.append(projectFormEl);
-      const projectFormInputEl = projectFormEl.children[0].children[1];
-      projectFormInputEl.value = projectName;
-      projectFormListener(projectFormEl, projectBoxId, projectName);
-      
-    }
-
-    if(deleteBtnEl) {
-      deleteAllTasksByProjectName(projectName);
-      projectBoxEl.remove();
-      setInitSectionMain();
-      
-    }
-  })
-
+function renderProjectFormBefore(projectAddBtnEl) {
+  const projectsEl = document.querySelector('.projects');
+  const projectFormEl = createProjectForm();
+  projectsEl.insertBefore(projectFormEl, projectAddBtnEl);
+  setInputFocus(projectFormEl.querySelector('input.input-box-input'));
+  projectFormListener(projectFormEl);
 }
 
-function projectFormListener(projectFormEl, boxId, oldProjectName) {
-  // selektuj creatovanu formu
-  
+function renderSectionMainProjectTasks(title,array) {
+  renderSectionMain(title, array);
+  addAddTaskBtn()
+}
+
+function projectFormListener(projectFormEl, oldProjectName) {
   const addProjectBtnEl = document.querySelector('.add-project-btn');
 
-  // sve ostalo isto
-  projectFormEl.addEventListener('click',(e) => {
-    console.log('OVDE');
+  projectFormEl.addEventListener('click', function(e) {
     e.preventDefault();
-    const inputProjectEl = projectFormEl.children[0].children[1];
     const addBtnEl = e.target.closest('.btn--add');
     const cancelBtnEl = e.target.closest('.btn--cancel');
 
+    const projectBoxEl = projectFormEl.closest('.project--box');
+    const boxId = projectBoxEl ? getProjectBoxId(projectBoxEl) : '';
+
     if(addBtnEl) {
+      const inputProjectEl = projectFormEl.querySelector('input.input-box-input');
+      const projectName = getInputValue(inputProjectEl);
+      if(!projectName) return;
      
-     const projectName = getInputValue(inputProjectEl);
-     if(!projectName) return;
-
-
-     // remove ovaj el
-     projectFormEl.remove();
-
-     // ako ga update nemoj
-   
-
+      projectFormEl.remove();
 
      if(boxId) {
+      renderProjectElInside(projectBoxEl, projectName, boxId);
+
       const newArray = updateTasksProjectName(oldProjectName, projectName);
-      const projectBoxEl = document.querySelector(`.project--box[data-project-id='${boxId}']`);
-      projectBoxEl.innerHTML = createProjectEl(projectName, boxId);
-      renderSectionMain(projectName, newArray);
+      renderSectionMainProjectTasks(projectName, newArray);
       return;
      }
 
      renderProjectElBefore(addProjectBtnEl, projectName);
-     renderSectionMain(projectName,getTasksByProjectName(projectName))
+     
+     const projectTasksArray = getTasksByProjectName(projectName)
+     renderSectionMainProjectTasks(projectName, projectTasksArray);
     }
 
-
-    if(cancelBtnEl) projectFormEl.classList.add('hidden');
-
+    if(cancelBtnEl) {
+      projectFormEl.remove();
+     if(boxId) renderProjectElInside(projectBoxEl, oldProjectName, boxId); 
+    }
   })
 }
 
-export function getInputValue(inputEl) {
-  const inputValue = inputEl.value;
-  inputEl.value = "";
-  return inputValue;
+function getProjectBoxId(projectBox) {
+  return projectBox.dataset.projectId;
 }
 
-// function renderProjectEl(parentEl, projectName) {
-//   parentEl.innerHTML = projectName;
-// }
+function projectBoxListener(projectBoxEl) {
+  projectBoxEl.addEventListener('click', function(e) {
+    const projectDots = e.target.closest('.project-dots');
+    if(!projectDots) return;
+
+    const projectBoxId = getProjectBoxId(projectBoxEl);
+    const popUpProjectEl = document.querySelector(`.pop-up--project[data-project-id='${projectBoxId}'`);
+    popUpProjectEl.classList.toggle('hidden');
+    if(!popUpProjectEl.classList.contains('hidden')) popUpProjectElListener(popUpProjectEl);
+  })
+}
+
+function popUpProjectElListener(popUpProjectEl) {
+  popUpProjectEl.addEventListener('click', (e) => {
+    const renameBtnEl = e.target.closest('.pop-up-btn--rename');
+    const deleteBtnEl = e.target.closest('.pop-up-btn--delete');
+
+    const projectBoxEl = popUpProjectEl.closest('.project--box');
+    const projectName = projectBoxEl.querySelector('.project-name').textContent;
+   
+    if(renameBtnEl) renderRenameProjectFormInside(projectBoxEl, projectName);
+
+    if(deleteBtnEl) deleteProjectEl(projectBoxEl, projectName);
+  })
+}
+
+function renderRenameProjectFormInside(projectBoxEl, projectName) {
+  projectBoxEl.innerHTML = '';
+  const projectRenameFormEl = appendRenameFormElInside(projectBoxEl, projectName);
+  const projectRenameFormInputEl = projectRenameFormEl.querySelector('input.input-box-input');
+  projectRenameFormInputEl.value = projectName;
+  setInputFocus(projectRenameFormInputEl);
+  projectFormListener(projectRenameFormEl, projectName);
+}
+
+function appendRenameFormElInside(projectBoxEl, projectName) {
+  const projectRenameFormEl = createProjectForm(projectName)
+  projectBoxEl.append(projectRenameFormEl);
+  return projectRenameFormEl;
+}
+
+function deleteProjectEl(projectBoxEl, projectName) {
+  deleteAllTasksByProjectName(projectName);
+  projectBoxEl.remove();
+  setInitSectionMain();
+}
+
+function renderProjectElInside(boxEl, projectName, boxId) {
+  if(boxId) {
+    boxEl.innerHTML = createProject(projectName, boxId);
+    return
+  }
+  boxEl.innerHTML = createProject(projectName);
+}
 
 function renderProjectElBefore(addProjectBtnEl, projectName) {
   const projectsEl = document.querySelector('.projects');
   
-  // OVDE JE ZABUNA ON JE STAVIO OVDE FORM EL
-  const projectBoxEl = createProjectInsideDivEl(projectName);
+  const projectBoxEl = createProjectElInsideBox(projectName);
+  projectBoxListener(projectBoxEl);
+
   projectsEl.insertBefore(projectBoxEl, addProjectBtnEl);
-
-  // Ovo ne treba tu da bude
-  addAddTaskBtn();
 }
 
-function createProjectInsideDivEl(projectName) {
-  removePreviousActiveProject();
+function createProjectElInsideBox(projectName) {
+  removePreviousActiveEl();
   const projectId = Date.now();
-  const projectDiv = document.createElement('div');
-  projectDiv.classList.add('project--box');
-  projectDiv.setAttribute('data-project-id',projectId);
+  const projectBox = document.createElement('div');
+  projectBox.classList.add('project--box');
+  projectBox.setAttribute('data-project-id',projectId);
 
+  projectBox.innerHTML = createProject(projectName, projectId);
 
-  projectDiv.innerHTML = `
-  <div class="project flex flex--center-v active">
-   <i class="fa-solid fa-bars fa-2x"></i>
-   <p class="project-name">${projectName}</p>
-   <i class="project-dots fa-solid fa-ellipsis-vertical fa-2x"></i>
-
-   <div class="pop-up pop-up--rename flex flex--column hidden" data-project-id="${projectId}">
-     <button class="pop-up-btn pop-up-btn--rename">Rename</button>
-     <button class="pop-up-btn pop-up-btn--delete">Delete</button>
-   </div>
-  </div>
-  `
-
-  return projectDiv;
+  return projectBox;
 }
 
-function removePreviousActiveProject() {
-  const projectNodeList = document.querySelectorAll('.project');
-  projectNodeList.forEach((project) => project.classList.remove('active'));
-}
-
-function createProjectEl(projectName, projectId) {
+function createProject(projectName, projectId) {
   return `<div class="project flex flex--center-v active">
   <i class="fa-solid fa-bars fa-2x"></i>
   <p class="project-name">${projectName}</p>
   <i class="project-dots fa-solid fa-ellipsis-vertical fa-2x"></i>
 
-  <div class="pop-up pop-up--rename flex flex--column hidden" data-project-id="${projectId}">
+  <div class="pop-up pop-up--project flex flex--column hidden" data-project-id="${projectId}">
     <button class="pop-up-btn pop-up-btn--rename">Rename</button>
     <button class="pop-up-btn pop-up-btn--delete">Delete</button>
   </div>
@@ -245,12 +229,10 @@ function createProjectEl(projectName, projectId) {
  `
 }
 
-
-
 function createProjectForm(projectName) {
-  const form = document.createElement('form');
-  form.classList.add('project-form','add-project');
-  form.innerHTML = `
+  const formEl = document.createElement('form');
+  formEl.classList.add('project-form','add-project');
+  formEl.innerHTML = `
   <div class="project-form-input-box flex flex--center-v margin-bottom--es">
     <i class="fa-solid fa-bars fa-2x"></i>
     <input type="text" name='projectName' ${projectName ? `value='${projectName}'` : ''} placeholder="Enter Project Name" class="input-box-input margin-left--es"/>
@@ -259,8 +241,10 @@ function createProjectForm(projectName) {
     <button class="btn btn--add">Add</button>
     <button class="btn btn--cancel">Cancel</button>
   </div>`
-  
-  return form;
+
+  return formEl;
 }
+
+
 
 
