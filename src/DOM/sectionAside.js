@@ -1,6 +1,6 @@
 import {setInitSectionMain} from "./sectionMain";
-import {checkHeadType, getTaskArray,getTasksByProjectName,deleteAllTasksByProjectName, updateTasksProjectName} from "../taskCollection";
-import { getInputValue, setInputFocus, getElementId, renderSectionMainHomeTasks, renderSectionMainProjectTasks, renderSectionMain} from "../general";
+import {checkHeadType, getTaskArray,getTasksByProjectName,deleteAllTasksByProjectName, updateTasksProjectName, checkProjectNameExistance} from "../taskCollection";
+import { getInputValue, setInputFocus, getElementId, renderSectionMainHomeTasks, renderSectionMainProjectTasks} from "../general";
 
 
 export function asideListener() {
@@ -104,7 +104,10 @@ function projectFormListener(projectFormEl, oldProjectName) {
     if(addBtnEl) {
       const inputProjectEl = projectFormEl.querySelector('input.input-box-input');
       const projectName = getInputValue(inputProjectEl);
-      if(!projectName) return;
+      // Check if projectName already exist
+      const isSame = hasSameProjectName(inputProjectEl, projectName);
+    
+      if(!projectName || isSame) return;
      
       projectFormEl.remove();
 
@@ -127,6 +130,19 @@ function projectFormListener(projectFormEl, oldProjectName) {
      if(boxId) renderProjectElInside(projectBoxEl, oldProjectName, boxId); 
     }
   })
+}
+
+function hasSameProjectName(inputEl, projectName) {
+  const projectNameList = Array.from(document.querySelectorAll('.project-name'));
+  const isSame = projectNameList ? checkProjectNameExistance(projectNameList, projectName) : false;
+
+  if(isSame) document.querySelector('.error').classList.remove('hidden');
+  else document.querySelector('.error').classList.add('hidden');
+
+  inputEl.value = projectName;
+  setInputFocus(inputEl);
+
+  return isSame;
 }
 
 
@@ -224,11 +240,12 @@ function createProjectForm(projectName) {
   const formEl = document.createElement('form');
   formEl.classList.add('project-form','add-project');
   formEl.innerHTML = `
-  <div class="project-form-input-box flex flex--center-v margin-bottom--es">
+  <div class="project-form-input-box flex flex--center-v">
     <i class="fa-solid fa-bars fa-2x"></i>
     <input type="text" name='projectName' ${projectName ? `value='${projectName}'` : ''} placeholder="Enter Project Name" class="input-box-input margin-left--es"/>
    </div>
-   <div class="project-form-btns flex flex--center gap--md">
+   <p class='error hidden'>* Project with that name already exist!</p>
+   <div class="project-form-btns flex flex--center gap--md margin-top--es">
     <button class="btn btn--add">Add</button>
     <button class="btn btn--cancel">Cancel</button>
   </div>`

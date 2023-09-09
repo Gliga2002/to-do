@@ -140,8 +140,13 @@ main {
   margin-bottom: 2rem;
 }
 
+
 .margin-top--sm {
   margin-top: 2rem;;
+}
+
+.margin-top--es {
+  margin-top:1rem;
 }
 
 .center-text {

@@ -1,6 +1,6 @@
 import { getInputValue, getElementId, renderTask, renderSectionMainHomeTasks, setInputFocus} from "../general";
 
-import {getTaskArray, getTaskById, deleteTasksById, updateTask,createTask} from "../taskCollection";
+import {getTaskArray, getTaskById, deleteTaskById, updateTask,createTask} from "../taskCollection";
 
 (function () {
   const addTaskBtnEl = document.querySelector('.add-task-btn');
@@ -155,7 +155,7 @@ import {getTaskArray, getTaskById, deleteTasksById, updateTask,createTask} from 
     }
 
     if(deleteBtnEl) {
-      deleteTasksById(Number(taskId));
+      deleteTaskById(Number(taskId));
       liEl.remove();
       popUpTaskEl.classList.add('hidden');
 

@@ -8,55 +8,33 @@ export function getTaskArray() {
   return taskArray;
 }
 
-// export function pushToTaskArray(task) {
-//   taskArray.push(task);
-//   console.log(taskArray);
-// }
-
-export function deleteTasksById(taskId) {
-  console.log('Before deletion');
-  console.log(taskArray);
-  taskArray = taskArray.filter((task) =>{
-    console.log(task.id, taskId);
-    return task.id !== taskId
-  });
-  console.log('After Deletion');
-  console.log(taskArray);
+export function deleteTaskById(taskId) {
+  taskArray = taskArray.filter((task) => task.id !== taskId);
 }
 
 export function getTasksByProjectName(projectName) {
- const filteredArray =  taskArray.filter(task => {
-    console.log(task.projectName, projectName);
-    return task.projectName === projectName
-  });
-  console.log('FILTRIRAM');
-  console.log(taskArray);
-  return filteredArray;
+ const filteredArray =  taskArray.filter(task => task.projectName === projectName);
+ return filteredArray;
 }
-
 
 export function getTaskById(taskId) {
   return taskArray.find(task =>task.id === taskId);
 }
 
-
 export function updateTasksProjectName(oldProjectName, newProjectName) {
-  console.log('OVDEEEEEEEE')
-  console.log(taskArray.some(task => task.projectName === oldProjectName))
   if(!taskArray.some(task => task.projectName === oldProjectName)) return [];
   taskArray.filter(task => task.projectName === oldProjectName).map(task => task.projectName = newProjectName)
   const updatedArray = taskArray.filter(task => task.projectName === newProjectName );
-  console.log(updatedArray);
   return updatedArray
 }
 
 export function deleteAllTasksByProjectName(projectName) {
-  console.log('PRE BRISANJE');
-  console.log(taskArray)
   taskArray = taskArray.filter(task => task.projectName !== projectName);
-  console.log('POSLE BRISANJA');
-  console.log(taskArray);
   return taskArray;
+}
+
+export function checkProjectNameExistance(projectNameElList, projectName) {
+  return projectNameElList.some(projectNameEl => projectNameEl.textContent === projectName);
 }
 
 

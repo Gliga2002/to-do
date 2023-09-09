@@ -224,9 +224,20 @@
 
 /* PROJECT FORM */
 
+/* .project-form-input-box {
+  margin-bottom: 1rem;
+} */
+
 .project-form {
   background-color: var(--color-cream--soft);
   padding:1rem;
+}
+
+.error {
+  font-size: 1rem;
+  color:var(--color-red);
+  text-align: center;
+  margin-top: 0.5rem;
 }
 
 /* POP UP */
