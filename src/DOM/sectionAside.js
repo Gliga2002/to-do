@@ -1,6 +1,6 @@
-import { renderSectionMain, setInitSectionMain, removeAddTaskBtn, addAddTaskBtn} from "./sectionMain";
+import {setInitSectionMain} from "./sectionMain";
 import {checkHeadType, getTaskArray,getTasksByProjectName,deleteAllTasksByProjectName, updateTasksProjectName} from "../taskCollection";
-import { getInputValue, setInputFocus, getElementId} from "../general";
+import { getInputValue, setInputFocus, getElementId, renderSectionMainHomeTasks, renderSectionMainProjectTasks, renderSectionMain} from "../general";
 
 
 export function asideListener() {
@@ -54,10 +54,7 @@ export function homeListener() {
   })
 }
 
-function renderSectionMainHomeTasks(title, array) {
-  renderSectionMain(title, array);
-  removeAddTaskBtn()
-}
+
 
 
 export function projectsListener() {
@@ -91,10 +88,7 @@ function renderProjectFormBefore(projectAddBtnEl) {
   projectFormListener(projectFormEl);
 }
 
-function renderSectionMainProjectTasks(title,array) {
-  renderSectionMain(title, array);
-  addAddTaskBtn()
-}
+
 
 function projectFormListener(projectFormEl, oldProjectName) {
   const addProjectBtnEl = document.querySelector('.add-project-btn');

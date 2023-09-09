@@ -1,4 +1,4 @@
-import { getInputValue, getElementId} from "../general";
+import { getInputValue, getElementId, renderTask, renderSectionMainHomeTasks, setInputFocus} from "../general";
 
 import {getTaskArray, getTaskById, deleteTasksById, updateTask,createTask} from "../taskCollection";
 
@@ -9,13 +9,13 @@ import {getTaskArray, getTaskById, deleteTasksById, updateTask,createTask} from 
 
   const taskFormEl = createTaskForm();
   tasksDiv.insertBefore(taskFormEl, addTaskBtnEl);
+  
   submitTaskFormListener(taskFormEl, sectionMainUlEl);
   cancelTaskFormListener(taskFormEl.querySelector('.btn--cancel-task'))
  
   addTaskBtnEl.addEventListener('click',() => {
-    console.log('ovde');
      toggleTaskForm(taskFormEl);
-    
+     setInputFocus(taskFormEl.querySelector('input[name="title"]')) 
   })
  })();
  
@@ -33,7 +33,6 @@ import {getTaskArray, getTaskById, deleteTasksById, updateTask,createTask} from 
     taskItems.title =  getInputValue(this.title);
     taskItems.details = getInputValue(this.details)
     taskItems.date = getInputValue(this.date);
-
 
     const taskId = getElementId(appendTaskEl);
 
@@ -59,7 +58,6 @@ import {getTaskArray, getTaskById, deleteTasksById, updateTask,createTask} from 
     formEl.reset();
   });
  }
-
 
 
  export function taskListener() {
@@ -113,7 +111,6 @@ import {getTaskArray, getTaskById, deleteTasksById, updateTask,createTask} from 
   const liEl = iconEl.closest('li');
   if(iconEl.classList.contains('fa-circle--check')) liEl.classList.remove('checked')
   if(iconEl.classList.contains('fa-circle--uncheck')) liEl.classList.add('checked')
-
  }
 
  function changeTaskStatus(iconEl) {
@@ -150,6 +147,7 @@ import {getTaskArray, getTaskById, deleteTasksById, updateTask,createTask} from 
       console.log(task);
       const taskFormEditEl = createTaskForm(task);
       liEl.appendChild(taskFormEditEl);
+      setInputFocus(taskFormEditEl.querySelector('input[name="title"]'))
       submitTaskFormListener(taskFormEditEl, liEl);
       cancelTaskFormListener(taskFormEditEl.querySelector('.btn--cancel-task'))
 
@@ -197,89 +195,16 @@ function createTaskForm(task) {
 
  }
 
-
-
- 
  export function setInitSectionMain() {
   const allTasksHomeEl = document.querySelector('.home--all-tasks');
   allTasksHomeEl.classList.add('active');
-  console.log('SET INIT SECTION MAIN');
-  renderSectionMain('All Tasks', getTaskArray());
-  removeAddTaskBtn();
+
+  renderSectionMainHomeTasks('All Tasks', getTaskArray());
 }
 
 
- export function renderSectionMain(titleName, array) {
-  const sectionMainHeadingEl = document.querySelector('.main-title');
-  const sectionMainUlEl = document.querySelector('.tasks-items');
 
-  renderMainHeading(
-    sectionMainHeadingEl,
-    titleName
-    );
 
-  renderTasks(
-    sectionMainUlEl,
-    array
-    );
 
-}
 
-function renderMainHeading(headingEl,title) {
-  console.log(headingEl, title)
-  headingEl.textContent = title;
-}
 
-function renderTasks(sectionMainUlEl, array) {
-  sectionMainUlEl.innerHTML = "";
-  array.forEach(task => {
-    sectionMainUlEl.appendChild(renderTask(task));
-  });
-}
-
-function renderTask(task) {
-  const liEl = document.createElement('li');
-  liEl.classList.add('tasks-item','margin-bottom--es');
-  if(task.isCompleted) liEl.classList.add('checked');
-  liEl.setAttribute('data-id',`${String(task.id)}`)
-  
-  liEl.innerHTML = `
-  <div class="task">
-    <div class="task-header flex">
-      <div class="task-header--left flex flex--center-v gap--es">
-       <div class='task-header--circle-box' data-id='${task.id}'>
-        ${task.isCompleted ? `<i class="circle fa-solid fa-circle-check fa-circle--check fa-2x " style="color: #3fca48;"></i>`  : `<i class="circle fa-regular fa-circle fa-circle--uncheck fa-2x"></i>`}
-        </div>
-          <p class="subheading">${task.title}</p>
-        </div>
-      
-      <div class="task-header--right flex flex--center-v gap--sm">
-        <div class="task-date">${task.date}</div>
-        <div class='task-header--star-box' data-id='${task.id}'>
-        ${task.isImportant ? `<i class="fa-solid fa-star fa-star--fill  fa-2x" style="color: #bcd11f;"></i>` : `<i class="fa-regular fa-star fa-star--unfill fa-2x"></i>`}
-        </div>
-        <i class="fa-solid fa-ellipsis-vertical fa-2x"></i> 
-        <div class="pop-up pop-up--task flex flex--column hidden" data-id='${task.id}'>
-          <button class="pop-up-btn pop-up-btn--edit">Edit</button>
-          <button class="pop-up-btn pop-up-btn--delete">Delete</button>
-          </div>        
-      </div>
-    </div>
-    <div class="task-body">
-      <p class="task-body-text">
-        ${task.details}
-      </p>
-    </div>
-</div>`;
-
-return liEl;
-
-}
-
-export function removeAddTaskBtn() {
-  document.querySelector('.add-task-btn').classList.add('hidden');
-}
-
-export function addAddTaskBtn() {
-  document.querySelector('.add-task-btn').classList.remove('hidden');
-}
