@@ -203,6 +203,7 @@ import {getTaskArray,pushToTaskArray, getTaskById, deleteTasksById, updateTask,c
  export function setInitSectionMain() {
   const allTasksHomeEl = document.querySelector('.home--all-tasks');
   allTasksHomeEl.classList.add('active');
+  console.log('OVDE');
   renderSectionMain('All Tasks', getTaskArray());
   removeAddTaskBtn();
 }
@@ -225,6 +226,7 @@ import {getTaskArray,pushToTaskArray, getTaskById, deleteTasksById, updateTask,c
 }
 
 function renderMainHeading(headingEl,title) {
+  console.log(headingEl, title)
   headingEl.textContent = title;
 }
 

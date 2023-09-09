@@ -2,7 +2,9 @@ import { isThisWeek, isToday} from 'date-fns'
 // Imam live konekciju, to znaci da mi pamti manipulisane vrednosti jer koristim import/export
 let taskArray = [];
 
+
 export function getTaskArray() {
+  console.log(taskArray);
   return taskArray;
 }
 
@@ -37,10 +39,26 @@ export function getTaskById(taskId) {
   return taskArray.find(task =>task.id === taskId);
 }
 
-export function updateProjectNameTask(oldProjectName, newProjectName) {
-  taskArray = taskArray.filter(task => task.projectName === oldProjectName).map(task => task.projectName = newProjectName);
+
+export function updateTasksProjectName(oldProjectName, newProjectName) {
+  console.log('OVDEEEEEEEE')
+  console.log(taskArray.some(task => task.projectName === oldProjectName))
+  if(!taskArray.some(task => task.projectName === oldProjectName)) return [];
+  taskArray.filter(task => task.projectName === oldProjectName).map(task => task.projectName = newProjectName)
+  const updatedArray = taskArray.filter(task => task.projectName === newProjectName );
+  console.log(updatedArray);
+  return updatedArray
+}
+
+export function deleteAllTasksByProjectName(projectName) {
+  console.log('PRE BRISANJE');
+  console.log(taskArray)
+  taskArray = taskArray.filter(task => task.projectName !== projectName);
+  console.log('POSLE BRISANJA');
+  console.log(taskArray);
   return taskArray;
 }
+
 
 export function createTask(taskitems) {
   const id = Date.now();

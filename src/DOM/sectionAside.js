@@ -1,5 +1,5 @@
-import { renderSectionMain} from "./sectionMain";
-import {checkHeadType, getTaskArray,getTasksByProjectName } from "../taskCollection";
+import { renderSectionMain, setInitSectionMain} from "./sectionMain";
+import {checkHeadType, getTaskArray,getTasksByProjectName,deleteAllTasksByProjectName, updateTasksProjectName, isProjectNameExist} from "../taskCollection";
 
 
 export function asideListener() {
@@ -26,11 +26,10 @@ export function asideListener() {
 
 
 function setActiveClass(activeEl, prevActiveEl) {
-  console.log(prevActiveEl)
+  removePreviousActiveProject();
   if(prevActiveEl) prevActiveEl.classList.remove('active');
       activeEl.classList.add('active');
       prevActiveEl = activeEl;
-      console.log(prevActiveEl);
       return prevActiveEl;
 }
 
@@ -52,7 +51,7 @@ export function homeListener() {
   })
 }
 
-
+// ove dve fje ne trebaju tu da budu
 export function removeAddTaskBtn() {
   document.querySelector('.add-task-btn').classList.add('hidden');
 }
@@ -66,16 +65,36 @@ export function projectListener() {
 
   projectsEl.addEventListener('click', function(e) {
     const projectEl = e.target.closest('.project');
-    const projectAddBtnEl = e.target.closest('.add-project-btn');
 
-    const projectFormEl = document.querySelector('.add-project'); 
+    const projectAddBtnEl = e.target.closest('.add-project-btn');
+    const projectDots = e.target.closest('.project-dots')
+
+
+    const renameBtnEl = e.target.closest('.pop-up-btn--rename');
+    const deleteBtnEl = e.target.closest('.pop-up-btn--delete');
 
     if(projectAddBtnEl) {
-      projectFormEl.classList.remove('hidden');
-      projectFormListener();
+
+      const projectFormEl = createProjectForm()
+
+      projectsEl.insertBefore(projectFormEl, projectAddBtnEl);
+      // create stardandr project form and insert it before projectAdd Btn El
+
+      projectFormListener(projectFormEl);
     }
 
-    if(projectEl) {
+    if(projectDots) {
+      const projectBoxEl = projectDots.closest('.project--box');
+      const projectBoxId = projectBoxEl.dataset.projectId;
+      const popUpProjectEl = document.querySelector(`.pop-up--rename[data-project-id='${projectBoxId}'`);
+      popUpProjectEl.classList.toggle('hidden');
+      popUpProjectElListener(popUpProjectEl, projectBoxEl, projectBoxId);
+    }
+    
+
+    // Ako knilknem rename i delete button kao da sam kliknuo projectEl i ovo se izvrsava
+    if(projectEl && !renameBtnEl && !deleteBtnEl) {
+      console.log('OVDE SAM NA KRAJU')
       const projectName = projectEl.children[1].textContent;
       renderSectionMain(
         projectName,
@@ -83,15 +102,51 @@ export function projectListener() {
 
       addAddTaskBtn();
     }
+
+  
   })
 }
 
-function projectFormListener() {
-  const projectFormEl = document.querySelector('.add-project');
-  const inputProjectEl = document.querySelector('.add-project .input-box-input');
+function popUpProjectElListener(popUpProjectEl,projectBoxEl, projectBoxId) {
+
   
+  popUpProjectEl.addEventListener('click', (e) => {
+    const renameBtnEl = e.target.closest('.pop-up-btn--rename');
+    const deleteBtnEl = e.target.closest('.pop-up-btn--delete');
+    const projectName = projectBoxEl.children[0].children[1].textContent;
+   
+
+    if(renameBtnEl) {
+      projectBoxEl.innerHTML = '';
+      // apenduj samo createRenameProjectForm (ista kao prosla)
+      const projectFormEl = createProjectForm(projectName)
+      projectBoxEl.append(projectFormEl);
+      const projectFormInputEl = projectFormEl.children[0].children[1];
+      projectFormInputEl.value = projectName;
+      projectFormListener(projectFormEl, projectBoxId, projectName);
+      
+    }
+
+    if(deleteBtnEl) {
+      deleteAllTasksByProjectName(projectName);
+      projectBoxEl.remove();
+      setInitSectionMain();
+      
+    }
+  })
+
+}
+
+function projectFormListener(projectFormEl, boxId, oldProjectName) {
+  // selektuj creatovanu formu
+  
+  const addProjectBtnEl = document.querySelector('.add-project-btn');
+
+  // sve ostalo isto
   projectFormEl.addEventListener('click',(e) => {
+    console.log('OVDE');
     e.preventDefault();
+    const inputProjectEl = projectFormEl.children[0].children[1];
     const addBtnEl = e.target.closest('.btn--add');
     const cancelBtnEl = e.target.closest('.btn--cancel');
 
@@ -100,10 +155,23 @@ function projectFormListener() {
      const projectName = getInputValue(inputProjectEl);
      if(!projectName) return;
 
-     renderProjectEl(projectFormEl, projectName);
 
-     projectFormEl.classList.add('hidden');
+     // remove ovaj el
+     projectFormEl.remove();
 
+     // ako ga update nemoj
+   
+
+
+     if(boxId) {
+      const newArray = updateTasksProjectName(oldProjectName, projectName);
+      const projectBoxEl = document.querySelector(`.project--box[data-project-id='${boxId}']`);
+      projectBoxEl.innerHTML = createProjectEl(projectName, boxId);
+      renderSectionMain(projectName, newArray);
+      return;
+     }
+
+     renderProjectElBefore(addProjectBtnEl, projectName);
      renderSectionMain(projectName,getTasksByProjectName(projectName))
     }
 
@@ -119,33 +187,80 @@ export function getInputValue(inputEl) {
   return inputValue;
 }
 
-function renderProjectEl(projectFormEl, projectName) {
+// function renderProjectEl(parentEl, projectName) {
+//   parentEl.innerHTML = projectName;
+// }
+
+function renderProjectElBefore(addProjectBtnEl, projectName) {
   const projectsEl = document.querySelector('.projects');
   
-  const projectBoxEl = createProjectEl(projectName);
-  projectsEl.insertBefore(projectBoxEl, projectFormEl);
+  // OVDE JE ZABUNA ON JE STAVIO OVDE FORM EL
+  const projectBoxEl = createProjectInsideDivEl(projectName);
+  projectsEl.insertBefore(projectBoxEl, addProjectBtnEl);
 
+  // Ovo ne treba tu da bude
   addAddTaskBtn();
 }
 
-function createProjectEl(projectName) {
+function createProjectInsideDivEl(projectName) {
+  removePreviousActiveProject();
+  const projectId = Date.now();
   const projectDiv = document.createElement('div');
   projectDiv.classList.add('project--box');
+  projectDiv.setAttribute('data-project-id',projectId);
+
 
   projectDiv.innerHTML = `
-  <div class="project flex flex--center-v">
+  <div class="project flex flex--center-v active">
    <i class="fa-solid fa-bars fa-2x"></i>
    <p class="project-name">${projectName}</p>
    <i class="project-dots fa-solid fa-ellipsis-vertical fa-2x"></i>
 
-   <div class="pop-up pop-up--rename flex flex--column hidden">
-     <button class="pop-up-btn pop-up--btn--rename">Rename</button>
+   <div class="pop-up pop-up--rename flex flex--column hidden" data-project-id="${projectId}">
+     <button class="pop-up-btn pop-up-btn--rename">Rename</button>
      <button class="pop-up-btn pop-up-btn--delete">Delete</button>
    </div>
   </div>
   `
 
   return projectDiv;
+}
+
+function removePreviousActiveProject() {
+  const projectNodeList = document.querySelectorAll('.project');
+  projectNodeList.forEach((project) => project.classList.remove('active'));
+}
+
+function createProjectEl(projectName, projectId) {
+  return `<div class="project flex flex--center-v active">
+  <i class="fa-solid fa-bars fa-2x"></i>
+  <p class="project-name">${projectName}</p>
+  <i class="project-dots fa-solid fa-ellipsis-vertical fa-2x"></i>
+
+  <div class="pop-up pop-up--rename flex flex--column hidden" data-project-id="${projectId}">
+    <button class="pop-up-btn pop-up-btn--rename">Rename</button>
+    <button class="pop-up-btn pop-up-btn--delete">Delete</button>
+  </div>
+ </div>
+ `
+}
+
+
+
+function createProjectForm(projectName) {
+  const form = document.createElement('form');
+  form.classList.add('project-form','add-project');
+  form.innerHTML = `
+  <div class="project-form-input-box flex flex--center-v margin-bottom--es">
+    <i class="fa-solid fa-bars fa-2x"></i>
+    <input type="text" name='projectName' ${projectName ? `value='${projectName}'` : ''} placeholder="Enter Project Name" class="input-box-input margin-left--es"/>
+   </div>
+   <div class="project-form-btns flex flex--center gap--md">
+    <button class="btn btn--add">Add</button>
+    <button class="btn btn--cancel">Cancel</button>
+  </div>`
+  
+  return form;
 }
 
 
