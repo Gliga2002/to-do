@@ -29,7 +29,7 @@ import {getTaskArray, getTaskById, deleteTaskById, updateTask,createTask} from "
 
     const taskItems = {};
 
-    taskItems.projectName = document.querySelector('.main-title').textContent;
+    
     taskItems.title =  getInputValue(this.title);
     taskItems.details = getInputValue(this.details)
     taskItems.date = getInputValue(this.date);
@@ -41,6 +41,7 @@ import {getTaskArray, getTaskById, deleteTaskById, updateTask,createTask} from "
       // taskParent treba da mi bude li
       appendTaskEl.append(renderTask(task));
     } else {
+      taskItems.projectName = document.querySelector('.main-title').textContent;
       const task = createTask(taskItems);
       task.pushToTaskArray();
       // taskParent treba da mi bude ul

@@ -76,7 +76,6 @@ export function createTask(taskitems) {
 
 export function updateTask(taskId,taskItems)  {
   const task = getTaskById(Number(taskId));
-  task.projectName = taskItems.projectName;
   task.title = taskItems.title;
   task.details = taskItems.details;
   task.date = taskItems.date;

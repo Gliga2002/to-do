@@ -151,8 +151,8 @@ function projectBoxListener(projectBoxEl) {
     const projectDots = e.target.closest('.project-dots');
     if(!projectDots) return;
 
-    const projectBoxId = getElement(projectBoxEl);
-    const popUpProjectEl = document.querySelector(`.pop-up--project[data-project-id='${projectBoxId}'`);
+    const projectBoxId = getElementId(projectBoxEl);
+    const popUpProjectEl = document.querySelector(`.pop-up--project[data-id='${projectBoxId}'`);
     popUpProjectEl.classList.toggle('hidden');
     if(!popUpProjectEl.classList.contains('hidden')) popUpProjectElListener(popUpProjectEl);
   })
