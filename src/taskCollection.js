@@ -1,4 +1,6 @@
-import { isThisWeek, isToday} from 'date-fns'
+import {isToday, addDays, isWithinInterval} from 'date-fns';
+
+const ADDED_DAYS = 7;
 // Imam live konekciju, to znaci da mi pamti manipulisane vrednosti jer koristim import/export
 let taskArray = [];
 
@@ -86,8 +88,31 @@ export function checkHeadType(homeTitle, array) {
   console.log(array);
   if(homeTitle === 'All Tasks') return array;
   if(homeTitle === 'Today') return array.filter((task) => isToday(new Date(task.date)));
-  if(homeTitle === 'Next 7 Days') return array.filter((task) => isThisWeek(new Date(task.date)));
+  if(homeTitle === 'Next 7 Days') {
+    const dateNow = new Date();
+
+    const add7Days = addDays(dateNow, ADDED_DAYS);
+
+    return array.filter((task) => {
+      const currentDate = getCurrentDate(task.date)
+      return isWithinInterval(currentDate, {start: dateNow,end: new Date(add7Days)})
+    });
+  }
   if(homeTitle === 'Important') return array.filter((task) => task.isImportant);
+}
+
+function getCurrentDate(taskDate) {
+ const currentDate = new Date();
+
+ const dateString = taskDate;
+
+ const dateComponents = dateString.split('-');
+
+ currentDate.setFullYear(parseInt(dateComponents[0], 10));
+ currentDate.setMonth(parseInt(dateComponents[1], 10) - 1); // Months are zero-based
+ currentDate.setDate(parseInt(dateComponents[2], 10));
+
+ return currentDate;
 }
 
 
