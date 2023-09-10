@@ -13,13 +13,10 @@ window.addEventListener('load',(e) => {
 
 window.addEventListener("beforeunload", function(event) {
   setStorageProjectNames();
-  // event.preventDefault();
-  // const taskArray = getTaskArray();
   setStorageTasksArray();
 });
 
 addToggleViewportColorListener();
-// setInitSectionMain();
 asideListener();
 homeListener();
 projectsListener();

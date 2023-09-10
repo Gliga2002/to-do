@@ -1,6 +1,6 @@
 import {setInitSectionMain} from "./sectionMain";
 import {checkHeadType, getTaskArray,getTasksByProjectName,deleteAllTasksByProjectName, updateTasksProjectName, checkProjectNameExistance} from "../taskCollection";
-import { getInputValue, setInputFocus, getElementId, renderSectionMainHomeTasks, renderSectionMainProjectTasks, generateUniqueId} from "../general";
+import { getInputValue, setInputFocus, getElementId, renderSectionMainHomeTasks, renderSectionMainProjectTasks, generateUniqueId,  removePreviousActiveEl, hideTasksFormWhenSwitch} from "../general";
 
 
 export function asideListener() {
@@ -23,33 +23,16 @@ function setActiveClass(activeEl) {
   activeEl.classList.add('active');
 }
 
-function removePreviousActiveEl() {
-  removePreviousActiveHome();
-  removePreviousActiveProject();
-}
-
-export function removePreviousActiveProject() {
-  const projectNodeList = document.querySelectorAll('.project');
-  projectNodeList.forEach((project) => project.classList.remove('active'));
-}
-
-function removePreviousActiveHome() {
-  const homeNodeList = document.querySelectorAll('.home');
-  homeNodeList.forEach((home) => home.classList.remove('active'));
-}
-
-
 
 export function homeListener() {
   const homesEl = document.querySelector('.homes');
   
-
   homesEl.addEventListener('click', function(e) {
-    const tasksFrom = document.querySelector('.tasks-form');
+    
     const homeEl = e.target.closest('.home');
     if(!homeEl) return;
-    // remove task form if exist
-    if(tasksFrom && !tasksFrom.classList.contains('hidden')) tasksFrom.classList.add('hidden');
+
+    hideTasksFormWhenSwitch();
 
     const homeTitle= homeEl.querySelector('p.subheading').textContent;
     const filteredTaskArray = checkHeadType(homeTitle, getTaskArray());
@@ -79,9 +62,7 @@ export function projectsListener() {
       const projectName = projectEl.querySelector('p.project-name').textContent;
       const projectTasksArray = getTasksByProjectName(projectName);
 
-      // Refaktorisi
-      const tasksFrom = document.querySelector('.tasks-form');
-      if(tasksFrom && !tasksFrom.classList.contains('hidden')) tasksFrom.classList.add('hidden');
+      hideTasksFormWhenSwitch();
 
       renderSectionMainProjectTasks(projectName, projectTasksArray);
     }

@@ -1,6 +1,6 @@
 import {isToday, addDays, isWithinInterval} from 'date-fns';
-import { generateUniqueId } from './general';
-import { renderProjectElBefore , removePreviousActiveProject} from './DOM/sectionAside';
+import { generateUniqueId,removePreviousActiveProject } from './general';
+import { renderProjectElBefore} from './DOM/sectionAside';
 
 const ADDED_DAYS = 7;
 // Imam live konekciju, to znaci da mi pamti manipulisane vrednosti jer koristim import/export
@@ -40,7 +40,6 @@ function getStorageTaskItems() {
   const storedTaskArray = JSON.parse(localStorage.getItem('tasks'));
   return storedTaskArray;
 }
-
 
 
 export function getTaskArray() {
@@ -101,39 +100,23 @@ export function toggleIsImportant(task) {
 
 export function pushTaskToArray(task) {
   taskArray.push(task);
-  console.log(taskArray);
 }
 
 // CreateTask.prototype.toggleIsCompleted = function() {
 //   this.isCompleted = this.isCompleted ? false : true;
-
-//   console.log('TASK AFTER CHANGE ISCompleted')
-//   console.log(this);
-//   setStorageTasksArray();
-
 //   return this.isCompleted;
 // }
 
 // CreateTask.prototype.toggleIsImportant = function() {
 //   this.isImportant = this.isImportant ? false : true;
-
-//   console.log('TASK AFTER CHANGE ISimportant')
-//   console.log(this);
-//   setStorageTasksArray();
-
 //   return this.isImportant;
 // }
 
-
 // CreateTask.prototype.pushToTaskArray = function() {
 //   taskArray.push(this);
-//   console.log(taskArray);
 //   setStorageTasksArray();
 // }
   
-
-
-
 export function updateTask(taskId,taskItems)  {
   const task = getTaskById(taskId);
   task.title = taskItems.title;
@@ -143,7 +126,6 @@ export function updateTask(taskId,taskItems)  {
 }
 
 export function checkHeadType(homeTitle, array) {
-  console.log(array);
   if(homeTitle === 'All Tasks') return array;
   if(homeTitle === 'Today') return array.filter((task) => isToday(new Date(task.date)));
   if(homeTitle === 'Next 7 Days') {

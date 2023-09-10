@@ -53,7 +53,6 @@ export function renderSectionMain(titleName, array) {
 }
 
 function renderMainHeading(headingEl,title) {
-  console.log(headingEl, title)
   headingEl.textContent = title;
 }
 
@@ -101,4 +100,24 @@ export function renderTask(task) {
 
 return liEl;
 
+}
+
+export function removePreviousActiveEl() {
+  removePreviousActiveHome();
+  removePreviousActiveProject();
+}
+
+export function removePreviousActiveProject() {
+  const projectNodeList = document.querySelectorAll('.project');
+  projectNodeList.forEach((project) => project.classList.remove('active'));
+}
+
+export function removePreviousActiveHome() {
+  const homeNodeList = document.querySelectorAll('.home');
+  homeNodeList.forEach((home) => home.classList.remove('active'));
+}
+
+export function hideTasksFormWhenSwitch() {
+  const taskForm = document.querySelector('.tasks-form');
+  if(taskForm && !taskForm.classList.contains('hidden')) taskForm.classList.add('hidden');
 }

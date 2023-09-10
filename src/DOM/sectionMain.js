@@ -1,5 +1,4 @@
-import { getInputValue, getElementId, renderTask, renderSectionMainHomeTasks, setInputFocus} from "../general";
-
+import { getInputValue, getElementId, renderTask, renderSectionMainHomeTasks, setInputFocus, hideTasksFormWhenSwitch} from "../general";
 import {getTaskArray, getTaskById, deleteTaskById, updateTask, CreateTask, toggleIsCompleted, toggleIsImportant, pushTaskToArray} from "../taskCollection";
 
 (function () {
@@ -29,7 +28,6 @@ import {getTaskArray, getTaskById, deleteTaskById, updateTask, CreateTask, toggl
 
     const taskItems = {};
 
-    
     taskItems.title =  getInputValue(this.title);
     taskItems.details = getInputValue(this.details)
     taskItems.date = getInputValue(this.date);
@@ -38,13 +36,13 @@ import {getTaskArray, getTaskById, deleteTaskById, updateTask, CreateTask, toggl
 
     if(taskId) {
       const task = updateTask(taskId, taskItems)
-      // taskParent treba da mi bude li
+ 
       appendTaskEl.append(renderTask(task));
     } else {
       taskItems.projectName = document.querySelector('.main-title').textContent;
       const task = new CreateTask(taskItems);
       pushTaskToArray(task);
-      // taskParent treba da mi bude ul
+ 
       appendTaskEl.append(renderTask(task));
     }
 
@@ -119,8 +117,6 @@ import {getTaskArray, getTaskById, deleteTaskById, updateTask, CreateTask, toggl
   const liEl = iconEl.closest('li');
   const liId = getElementId(liEl);
   const task = getTaskById(liId)
-  console.log(iconEl);
-  console.log(iconEl.classList.contains('circle'));
   const status = iconEl.classList.contains('circle') ? toggleIsCompleted(task) : toggleIsImportant(task);
 
   return {id: liId, status}
@@ -149,8 +145,6 @@ import {getTaskArray, getTaskById, deleteTaskById, updateTask, CreateTask, toggl
     if(editBtnEl) {
       const task = getTaskById(taskId);
       liEl.innerHTML = '';
-      console.log('TASK TO BE IN EDIT FORM');
-      console.log(task);
       const taskFormEditEl = createTaskForm(task);
       liEl.appendChild(taskFormEditEl);
       setInputFocus(taskFormEditEl.querySelector('input[name="title"]'))
@@ -164,17 +158,12 @@ import {getTaskArray, getTaskById, deleteTaskById, updateTask, CreateTask, toggl
       deleteTaskById(taskId);
       liEl.remove();
       popUpTaskEl.classList.add('hidden');
-
     }
-
   })
-
  }
 
 function createTaskForm(task) {
-  console.log(task);
   const taskFormEl = document.createElement('form');
-  console.log(taskFormEl);
   taskFormEl.classList.add(`${task ? 'tasks-form--edit' :'tasks-form'}`,'flex','flex--column','gap--sm','margin-top--sm',`${!task ? 'hidden' :'edit'}`);
   taskFormEl.innerHTML = `
   <div class="input-box flex flex--column">
@@ -202,11 +191,10 @@ function createTaskForm(task) {
  }
 
  export function setInitSectionMain() {
-  const tasksFrom = document.querySelector('.tasks-form');
   const allTasksHomeEl = document.querySelector('.home--all-tasks');
   allTasksHomeEl.classList.add('active');
 
-  if(tasksFrom && !tasksFrom.classList.contains('hidden')) tasksFrom.classList.add('hidden');
+  hideTasksFormWhenSwitch();
 
   renderSectionMainHomeTasks('All Tasks', getTaskArray());
 }
