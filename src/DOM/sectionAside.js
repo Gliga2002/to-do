@@ -42,10 +42,14 @@ function removePreviousActiveHome() {
 
 export function homeListener() {
   const homesEl = document.querySelector('.homes');
+  
 
   homesEl.addEventListener('click', function(e) {
+    const tasksFrom = document.querySelector('.tasks-form');
     const homeEl = e.target.closest('.home');
     if(!homeEl) return;
+    // remove task form if exist
+    if(tasksFrom && !tasksFrom.classList.contains('hidden')) tasksFrom.classList.add('hidden');
 
     const homeTitle= homeEl.querySelector('p.subheading').textContent;
     const filteredTaskArray = checkHeadType(homeTitle, getTaskArray());

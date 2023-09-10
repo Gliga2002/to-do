@@ -52,9 +52,10 @@ import {getTaskArray, getTaskById, deleteTaskById, updateTask,createTask} from "
   })
  }
 
- function cancelTaskFormListener(btnCancelTaskEl) {
+ function cancelTaskFormListener(btnCancelTaskEl, appendTaskEl, task) {
   const formEl = btnCancelTaskEl.closest('form')
   btnCancelTaskEl.addEventListener('click', () => {
+    if(appendTaskEl) appendTaskEl.append(renderTask(task))
     formEl.classList.add('hidden');
     formEl.reset();
   });
@@ -76,7 +77,7 @@ import {getTaskArray, getTaskById, deleteTaskById, updateTask,createTask} from "
       toggleCheckedClass(uncheckCircle);
       const  changedTaskStatus = changeTaskStatus(uncheckCircle);
       const circleBoxEl = document.querySelector(`.task-header--circle-box[data-id='${changedTaskStatus.id}']`);
-      const checkCircleIcon = `<i class="fa-solid fa-circle-check fa-circle--check fa-2x" style="color: #3fca48;" data-id='${changedTaskStatus.id}'></i>`
+      const checkCircleIcon = `<i class="circle fa-solid fa-circle-check fa-circle--check fa-2x" style="color: #3fca48;" data-id='${changedTaskStatus.id}'></i>`
       changeTaskStatusUI(circleBoxEl, checkCircleIcon)
     }
 
@@ -84,7 +85,7 @@ import {getTaskArray, getTaskById, deleteTaskById, updateTask,createTask} from "
       toggleCheckedClass(checkCircle);
       const  changedTaskStatus = changeTaskStatus(checkCircle);
       const circleBoxEl = document.querySelector(`.task-header--circle-box[data-id='${changedTaskStatus.id}']`);
-      const uncheckCircleIcon = `<i class="fa-regular fa-circle fa-circle--uncheck fa-2x" data-id='${changedTaskStatus.id}'></i>`;
+      const uncheckCircleIcon = `<i class="circle fa-regular fa-circle fa-circle--uncheck fa-2x" data-id='${changedTaskStatus.id}'></i>`;
       changeTaskStatusUI(circleBoxEl, uncheckCircleIcon);
     }
 
@@ -118,6 +119,8 @@ import {getTaskArray, getTaskById, deleteTaskById, updateTask,createTask} from "
   const liEl = iconEl.closest('li');
   const liId = getElementId(liEl);
   const task = getTaskById(Number(liId))
+  console.log(iconEl);
+  console.log(iconEl.classList.contains('circle'));
   const status = iconEl.classList.contains('circle') ? task.setIsCompleted() : task.setIsImportant()
 
   return {id: liId, status}
@@ -127,6 +130,7 @@ import {getTaskArray, getTaskById, deleteTaskById, updateTask,createTask} from "
   boxEl.innerHTML = '';
   boxEl.innerHTML = icon;
  }
+
 
  function togglePopUpEdit(verticalDots) {
   const liId = getElementId(verticalDots.closest('li'));
@@ -145,12 +149,13 @@ import {getTaskArray, getTaskById, deleteTaskById, updateTask,createTask} from "
     if(editBtnEl) {
       const task = getTaskById(Number(taskId));
       liEl.innerHTML = '';
+      console.log('TASK TO BE IN EDIT FORM');
       console.log(task);
       const taskFormEditEl = createTaskForm(task);
       liEl.appendChild(taskFormEditEl);
       setInputFocus(taskFormEditEl.querySelector('input[name="title"]'))
       submitTaskFormListener(taskFormEditEl, liEl);
-      cancelTaskFormListener(taskFormEditEl.querySelector('.btn--cancel-task'))
+      cancelTaskFormListener(taskFormEditEl.querySelector('.btn--cancel-task'), liEl, task)
 
       popUpTaskEl.classList.add('hidden');
     }

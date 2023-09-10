@@ -4,6 +4,23 @@ const ADDED_DAYS = 7;
 // Imam live konekciju, to znaci da mi pamti manipulisane vrednosti jer koristim import/export
 let taskArray = [];
 
+// export function getStorageData() {
+//   if(localStorage.getItem('tasks')) {
+//     console.log('GET TASKS'); 
+//     const storedTaskArray = JSON.parse(localStorage.getItem('tasks'));
+//     console.log(storedTaskArray);
+//     taskArray = [...storedTaskArray];
+//     console.log(taskArray);
+//   } else {
+//     console.log('NO TASKS');
+//   }
+// }
+
+// function setStorageData() {
+//   localStorage.setItem('tasks',JSON.stringify(taskArray));
+//   console.log('SETUJEM')
+// }
+
 
 export function getTaskArray() {
   console.log(taskArray);
@@ -12,6 +29,7 @@ export function getTaskArray() {
 
 export function deleteTaskById(taskId) {
   taskArray = taskArray.filter((task) => task.id !== taskId);
+  // setStorageData();
 }
 
 export function getTasksByProjectName(projectName) {
@@ -27,11 +45,13 @@ export function updateTasksProjectName(oldProjectName, newProjectName) {
   if(!taskArray.some(task => task.projectName === oldProjectName)) return [];
   taskArray.filter(task => task.projectName === oldProjectName).map(task => task.projectName = newProjectName)
   const updatedArray = taskArray.filter(task => task.projectName === newProjectName );
+  // setStorageData();
   return updatedArray
 }
 
 export function deleteAllTasksByProjectName(projectName) {
   taskArray = taskArray.filter(task => task.projectName !== projectName);
+  // setStorageData();
   return taskArray;
 }
 
@@ -46,6 +66,7 @@ export function createTask(taskitems) {
   function toggleIsCompleted() {
     this.isCompleted = this.isCompleted ? false : true;
 
+    console.log('TASK AFTER CHANGE ISCompleted')
     console.log(this);
 
     return this.isCompleted;
@@ -54,6 +75,7 @@ export function createTask(taskitems) {
   function toggleIsImportant() {
     this.isImportant = this.isImportant ? false : true;
 
+    console.log('TASK AFTER CHANGE ISimportant')
     console.log(this);
 
     return this.isImportant;
@@ -61,7 +83,10 @@ export function createTask(taskitems) {
 
    function pushToTaskArray() {
     taskArray.push(this);
+    // setStorageData();
   }
+
+ 
 
   return {id,
     projectName:taskitems.projectName, 
@@ -72,9 +97,11 @@ export function createTask(taskitems) {
     isImportant:false,
     setIsCompleted:toggleIsCompleted,
     setIsImportant:toggleIsImportant,
-    pushToTaskArray:pushToTaskArray
+    pushToTaskArray:pushToTaskArray,
   }
 }
+
+
 
 export function updateTask(taskId,taskItems)  {
   const task = getTaskById(Number(taskId));
