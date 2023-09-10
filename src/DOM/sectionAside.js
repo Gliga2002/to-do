@@ -28,7 +28,7 @@ function removePreviousActiveEl() {
   removePreviousActiveProject();
 }
 
-function removePreviousActiveProject() {
+export function removePreviousActiveProject() {
   const projectNodeList = document.querySelectorAll('.project');
   projectNodeList.forEach((project) => project.classList.remove('active'));
 }

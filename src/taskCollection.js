@@ -1,6 +1,6 @@
 import {isToday, addDays, isWithinInterval} from 'date-fns';
 import { generateUniqueId } from './general';
-import { renderProjectElBefore } from './DOM/sectionAside';
+import { renderProjectElBefore , removePreviousActiveProject} from './DOM/sectionAside';
 
 const ADDED_DAYS = 7;
 // Imam live konekciju, to znaci da mi pamti manipulisane vrednosti jer koristim import/export
@@ -12,11 +12,16 @@ export function getStorageData() {
     const storedTaskArray = JSON.parse(localStorage.getItem('tasks'));
 
     taskArray = [...storedTaskArray];
-    taskArray.filter((item, index, array) => {
-    const firstIndex = array.findIndex((el) => el.projectName === item.projectName);
+    // taskArray.filter((item, index, array) => {
+    // const firstIndex = array.findIndex((el) => el.projectName === item.projectName);
 
-    return index === firstIndex;
-    }).map((task) => renderProjectElBefore(addProjectBtnEl, task.projectName))
+    // return index === firstIndex;
+    // }).map((task) => renderProjectElBefore(addProjectBtnEl, task.projectName))
+    const projectNamesArray = getStorageProjecNames();
+    projectNamesArray.forEach(projectName => {
+      renderProjectElBefore(addProjectBtnEl, projectName);
+      removePreviousActiveProject();
+    });
   } else {
     console.log('NO TASKS');
   }
@@ -25,6 +30,12 @@ export function getStorageData() {
 function setStorageTasksArray() {
   localStorage.setItem('tasks',JSON.stringify(taskArray));
   console.log('SETUJEM')
+}
+
+function getStorageProjecNames() {
+  const projectNamesArray = JSON.parse(localStorage.getItem('projectNames'));
+  return projectNamesArray;
+
 }
 
 
