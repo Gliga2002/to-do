@@ -9,35 +9,37 @@ let taskArray = [];
 export function getStorageData() {
   const addProjectBtnEl = document.querySelector('.add-project-btn');
   if(localStorage.getItem('tasks')) {
-    const storedTaskArray = JSON.parse(localStorage.getItem('tasks'));
-
+    const storedTaskArray = getStorageTaskItems();
     taskArray = [...storedTaskArray];
-    // taskArray.filter((item, index, array) => {
-    // const firstIndex = array.findIndex((el) => el.projectName === item.projectName);
 
-    // return index === firstIndex;
-    // }).map((task) => renderProjectElBefore(addProjectBtnEl, task.projectName))
     const projectNamesArray = getStorageProjecNames();
     projectNamesArray.forEach(projectName => {
       renderProjectElBefore(addProjectBtnEl, projectName);
       removePreviousActiveProject();
     });
-  } else {
-    console.log('NO TASKS');
-  }
+  } 
 }
 
-function setStorageTasksArray() {
+export function setStorageProjectNames() {
+  const projectNameElNodeList = document.querySelectorAll('.project-name');
+  const projectNameElArray = [...projectNameElNodeList];
+  const projectNameArray = projectNameElArray.map((projectNameEl) => projectNameEl.textContent);
+  localStorage.setItem('projectNames',JSON.stringify(projectNameArray));
+}
+
+export function setStorageTasksArray() {
   localStorage.setItem('tasks',JSON.stringify(taskArray));
-  console.log('SETUJEM')
 }
 
 function getStorageProjecNames() {
   const projectNamesArray = JSON.parse(localStorage.getItem('projectNames'));
   return projectNamesArray;
-
 }
 
+function getStorageTaskItems() {
+  const storedTaskArray = JSON.parse(localStorage.getItem('tasks'));
+  return storedTaskArray;
+}
 
 
 
@@ -47,7 +49,6 @@ export function getTaskArray() {
 
 export function deleteTaskById(taskId) {
   taskArray = taskArray.filter((task) => task.id !== taskId);
-  setStorageTasksArray();
 }
 
 export function getTasksByProjectName(projectName) {
@@ -63,13 +64,11 @@ export function updateTasksProjectName(oldProjectName, newProjectName) {
   if(!taskArray.some(task => task.projectName === oldProjectName)) return [];
   taskArray.filter(task => task.projectName === oldProjectName).map(task => task.projectName = newProjectName)
   const updatedArray = taskArray.filter(task => task.projectName === newProjectName );
-  setStorageTasksArray();
   return updatedArray
 }
 
 export function deleteAllTasksByProjectName(projectName) {
   taskArray = taskArray.filter(task => task.projectName !== projectName);
-  setStorageTasksArray();
   return taskArray;
 }
 
@@ -90,14 +89,12 @@ export function CreateTask(taskitems) {
 
 export function toggleIsCompleted(task) {
   task.isCompleted = task.isCompleted ? false :true;
-  setStorageTasksArray();
 
   return task.isCompleted
 }
 
 export function toggleIsImportant(task) {
   task.isImportant = task.isImportant ? false :true;
-  setStorageTasksArray();
 
   return task.isImportant;
 }
@@ -105,7 +102,6 @@ export function toggleIsImportant(task) {
 export function pushTaskToArray(task) {
   taskArray.push(task);
   console.log(taskArray);
-  setStorageTasksArray();
 }
 
 // CreateTask.prototype.toggleIsCompleted = function() {
@@ -143,7 +139,6 @@ export function updateTask(taskId,taskItems)  {
   task.title = taskItems.title;
   task.details = taskItems.details;
   task.date = taskItems.date;
-  setStorageTaskArray();
   return task;
 }
 

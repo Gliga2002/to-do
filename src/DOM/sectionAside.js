@@ -79,6 +79,10 @@ export function projectsListener() {
       const projectName = projectEl.querySelector('p.project-name').textContent;
       const projectTasksArray = getTasksByProjectName(projectName);
 
+      // Refaktorisi
+      const tasksFrom = document.querySelector('.tasks-form');
+      if(tasksFrom && !tasksFrom.classList.contains('hidden')) tasksFrom.classList.add('hidden');
+
       renderSectionMainProjectTasks(projectName, projectTasksArray);
     }
   })
