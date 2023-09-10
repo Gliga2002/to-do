@@ -1,6 +1,6 @@
 import { getInputValue, getElementId, renderTask, renderSectionMainHomeTasks, setInputFocus} from "../general";
 
-import {getTaskArray, getTaskById, deleteTaskById, updateTask,createTask} from "../taskCollection";
+import {getTaskArray, getTaskById, deleteTaskById, updateTask, CreateTask, toggleIsCompleted, toggleIsImportant, pushTaskToArray} from "../taskCollection";
 
 (function () {
   const addTaskBtnEl = document.querySelector('.add-task-btn');
@@ -42,8 +42,8 @@ import {getTaskArray, getTaskById, deleteTaskById, updateTask,createTask} from "
       appendTaskEl.append(renderTask(task));
     } else {
       taskItems.projectName = document.querySelector('.main-title').textContent;
-      const task = createTask(taskItems);
-      task.pushToTaskArray();
+      const task = new CreateTask(taskItems);
+      pushTaskToArray(task);
       // taskParent treba da mi bude ul
       appendTaskEl.append(renderTask(task));
     }
@@ -118,10 +118,10 @@ import {getTaskArray, getTaskById, deleteTaskById, updateTask,createTask} from "
  function changeTaskStatus(iconEl) {
   const liEl = iconEl.closest('li');
   const liId = getElementId(liEl);
-  const task = getTaskById(Number(liId))
+  const task = getTaskById(liId)
   console.log(iconEl);
   console.log(iconEl.classList.contains('circle'));
-  const status = iconEl.classList.contains('circle') ? task.setIsCompleted() : task.setIsImportant()
+  const status = iconEl.classList.contains('circle') ? toggleIsCompleted(task) : toggleIsImportant(task);
 
   return {id: liId, status}
  }
@@ -147,7 +147,7 @@ import {getTaskArray, getTaskById, deleteTaskById, updateTask,createTask} from "
     const deleteBtnEl = e.target.closest('.pop-up-btn--delete');
 
     if(editBtnEl) {
-      const task = getTaskById(Number(taskId));
+      const task = getTaskById(taskId);
       liEl.innerHTML = '';
       console.log('TASK TO BE IN EDIT FORM');
       console.log(task);
@@ -161,7 +161,7 @@ import {getTaskArray, getTaskById, deleteTaskById, updateTask,createTask} from "
     }
 
     if(deleteBtnEl) {
-      deleteTaskById(Number(taskId));
+      deleteTaskById(taskId);
       liEl.remove();
       popUpTaskEl.classList.add('hidden');
 
@@ -202,8 +202,11 @@ function createTaskForm(task) {
  }
 
  export function setInitSectionMain() {
+  const tasksFrom = document.querySelector('.tasks-form');
   const allTasksHomeEl = document.querySelector('.home--all-tasks');
   allTasksHomeEl.classList.add('active');
+
+  if(tasksFrom && !tasksFrom.classList.contains('hidden')) tasksFrom.classList.add('hidden');
 
   renderSectionMainHomeTasks('All Tasks', getTaskArray());
 }

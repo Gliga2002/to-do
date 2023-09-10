@@ -1,35 +1,42 @@
 import {isToday, addDays, isWithinInterval} from 'date-fns';
+import { generateUniqueId } from './general';
+import { renderProjectElBefore } from './DOM/sectionAside';
 
 const ADDED_DAYS = 7;
 // Imam live konekciju, to znaci da mi pamti manipulisane vrednosti jer koristim import/export
 let taskArray = [];
 
-// export function getStorageData() {
-//   if(localStorage.getItem('tasks')) {
-//     console.log('GET TASKS'); 
-//     const storedTaskArray = JSON.parse(localStorage.getItem('tasks'));
-//     console.log(storedTaskArray);
-//     taskArray = [...storedTaskArray];
-//     console.log(taskArray);
-//   } else {
-//     console.log('NO TASKS');
-//   }
-// }
+export function getStorageData() {
+  const addProjectBtnEl = document.querySelector('.add-project-btn');
+  if(localStorage.getItem('tasks')) {
+    const storedTaskArray = JSON.parse(localStorage.getItem('tasks'));
 
-// function setStorageData() {
-//   localStorage.setItem('tasks',JSON.stringify(taskArray));
-//   console.log('SETUJEM')
-// }
+    taskArray = [...storedTaskArray];
+    taskArray.filter((item, index, array) => {
+    const firstIndex = array.findIndex((el) => el.projectName === item.projectName);
+
+    return index === firstIndex;
+    }).map((task) => renderProjectElBefore(addProjectBtnEl, task.projectName))
+  } else {
+    console.log('NO TASKS');
+  }
+}
+
+function setStorageTasksArray() {
+  localStorage.setItem('tasks',JSON.stringify(taskArray));
+  console.log('SETUJEM')
+}
+
+
 
 
 export function getTaskArray() {
-  console.log(taskArray);
   return taskArray;
 }
 
 export function deleteTaskById(taskId) {
   taskArray = taskArray.filter((task) => task.id !== taskId);
-  // setStorageData();
+  setStorageTasksArray();
 }
 
 export function getTasksByProjectName(projectName) {
@@ -45,13 +52,13 @@ export function updateTasksProjectName(oldProjectName, newProjectName) {
   if(!taskArray.some(task => task.projectName === oldProjectName)) return [];
   taskArray.filter(task => task.projectName === oldProjectName).map(task => task.projectName = newProjectName)
   const updatedArray = taskArray.filter(task => task.projectName === newProjectName );
-  // setStorageData();
+  setStorageTasksArray();
   return updatedArray
 }
 
 export function deleteAllTasksByProjectName(projectName) {
   taskArray = taskArray.filter(task => task.projectName !== projectName);
-  // setStorageData();
+  setStorageTasksArray();
   return taskArray;
 }
 
@@ -60,54 +67,72 @@ export function checkProjectNameExistance(projectNameElList, projectName) {
 }
 
 
-export function createTask(taskitems) {
-  const id = Date.now();
-  
-  function toggleIsCompleted() {
-    this.isCompleted = this.isCompleted ? false : true;
-
-    console.log('TASK AFTER CHANGE ISCompleted')
-    console.log(this);
-
-    return this.isCompleted;
-  }
-
-  function toggleIsImportant() {
-    this.isImportant = this.isImportant ? false : true;
-
-    console.log('TASK AFTER CHANGE ISimportant')
-    console.log(this);
-
-    return this.isImportant;
-  }
-
-   function pushToTaskArray() {
-    taskArray.push(this);
-    // setStorageData();
-  }
-
- 
-
-  return {id,
-    projectName:taskitems.projectName, 
-    title:taskitems.title,
-    details:taskitems.details,
-    date:taskitems.date, 
-    isCompleted:false,
-    isImportant:false,
-    setIsCompleted:toggleIsCompleted,
-    setIsImportant:toggleIsImportant,
-    pushToTaskArray:pushToTaskArray,
-  }
+export function CreateTask(taskitems) {
+  this.id = generateUniqueId();
+  this.projectName = taskitems.projectName;
+  this.title = taskitems.title;
+  this.details = taskitems.details;
+  this.date  = taskitems.date;
+  this.isCompleted = false;
+  this.isImportant = false;
 }
+
+export function toggleIsCompleted(task) {
+  task.isCompleted = task.isCompleted ? false :true;
+  setStorageTasksArray();
+
+  return task.isCompleted
+}
+
+export function toggleIsImportant(task) {
+  task.isImportant = task.isImportant ? false :true;
+  setStorageTasksArray();
+
+  return task.isImportant;
+}
+
+export function pushTaskToArray(task) {
+  taskArray.push(task);
+  console.log(taskArray);
+  setStorageTasksArray();
+}
+
+// CreateTask.prototype.toggleIsCompleted = function() {
+//   this.isCompleted = this.isCompleted ? false : true;
+
+//   console.log('TASK AFTER CHANGE ISCompleted')
+//   console.log(this);
+//   setStorageTasksArray();
+
+//   return this.isCompleted;
+// }
+
+// CreateTask.prototype.toggleIsImportant = function() {
+//   this.isImportant = this.isImportant ? false : true;
+
+//   console.log('TASK AFTER CHANGE ISimportant')
+//   console.log(this);
+//   setStorageTasksArray();
+
+//   return this.isImportant;
+// }
+
+
+// CreateTask.prototype.pushToTaskArray = function() {
+//   taskArray.push(this);
+//   console.log(taskArray);
+//   setStorageTasksArray();
+// }
+  
 
 
 
 export function updateTask(taskId,taskItems)  {
-  const task = getTaskById(Number(taskId));
+  const task = getTaskById(taskId);
   task.title = taskItems.title;
   task.details = taskItems.details;
   task.date = taskItems.date;
+  setStorageTaskArray();
   return task;
 }
 

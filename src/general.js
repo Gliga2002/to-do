@@ -8,6 +8,12 @@ export function setInputFocus(inputEl) {
   inputEl.select();
 }
 
+export function generateUniqueId() {
+  const timestamp = Date.now();
+  const random = Math.floor(Math.random() * 1000000); // Adjust the range as needed
+  return `${timestamp}-${random}`;
+}
+
 export function getElementId(element) {
   return element.dataset.id;
 }

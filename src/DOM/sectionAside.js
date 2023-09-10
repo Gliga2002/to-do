@@ -1,6 +1,6 @@
 import {setInitSectionMain} from "./sectionMain";
 import {checkHeadType, getTaskArray,getTasksByProjectName,deleteAllTasksByProjectName, updateTasksProjectName, checkProjectNameExistance} from "../taskCollection";
-import { getInputValue, setInputFocus, getElementId, renderSectionMainHomeTasks, renderSectionMainProjectTasks} from "../general";
+import { getInputValue, setInputFocus, getElementId, renderSectionMainHomeTasks, renderSectionMainProjectTasks, generateUniqueId} from "../general";
 
 
 export function asideListener() {
@@ -205,7 +205,7 @@ function renderProjectElInside(boxEl, projectName, boxId) {
   boxEl.innerHTML = createProject(projectName);
 }
 
-function renderProjectElBefore(addProjectBtnEl, projectName) {
+export function renderProjectElBefore(addProjectBtnEl, projectName) {
   const projectsEl = document.querySelector('.projects');
   
   const projectBoxEl = createProjectElInsideBox(projectName);
@@ -216,7 +216,7 @@ function renderProjectElBefore(addProjectBtnEl, projectName) {
 
 function createProjectElInsideBox(projectName) {
   removePreviousActiveEl();
-  const projectId = Date.now();
+  const projectId = generateUniqueId();
   const projectBox = document.createElement('div');
   projectBox.classList.add('project--box');
   projectBox.setAttribute('data-id',projectId);

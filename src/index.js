@@ -6,13 +6,13 @@ import {getStorageData} from './taskCollection';
 import './css/style.css';
 import './css/general.css';
 
-// window.addEventListener('load',(e) => {
-//   getStorageData();
-//   setInitSectionMain();
-// })
+window.addEventListener('load',(e) => {
+  getStorageData();
+  setInitSectionMain();
+})
 
 addToggleViewportColorListener();
-setInitSectionMain();
+// setInitSectionMain();
 asideListener();
 homeListener();
 projectsListener();
