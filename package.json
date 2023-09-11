@@ -5,9 +5,11 @@
   "main": "webpack.config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "deploying":"git subtree push --prefix dist origin gh-pages",
     "watch": "webpack --watch",
     "start": "webpack serve --open",
-    "build": "webpack"
+    "build": "webpack",
+    "clean": "rm -rf dist"
   },
   "author": "",
   "license": "ISC",
